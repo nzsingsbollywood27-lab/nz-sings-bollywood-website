@@ -5,6 +5,11 @@ import { Reveal } from "./Reveal";
 
 const FEATURED_CATEGORIES = new Set(["Founding Partner", "Prime Partner", "Technology Partner"]);
 
+const categoryLabel = (category) => {
+    if (category === "Powered By Partner") return "Powered by Partners";
+    return category;
+};
+
 const partnerGridClass = (count, isFeatured) => {
     if (isFeatured && count === 1) return "grid grid-cols-1";
     if (count === 1) return "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
@@ -62,9 +67,11 @@ const PartnerCard = ({ partner, testId, isFeatured }) => (
             <LogoOrName partner={partner} isFeatured={isFeatured} />
         </span>
 
-        <span className="relative mt-4 block text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-400 transition-colors duration-300 group-hover:text-[#d4af37]">
-            {partner.name}
-        </span>
+        {partner.logo && (
+            <span className="relative mt-4 block text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-400 transition-colors duration-300 group-hover:text-[#d4af37]">
+                {partner.name}
+            </span>
+        )}
     </a>
 );
 
@@ -82,7 +89,7 @@ const CategoryBlock = ({ category, partners, index }) => {
                 <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center">
                     <p className="flex shrink-0 items-center gap-3 text-[11px] font-black uppercase tracking-[0.34em] text-[#d4af37]">
                         <span className="h-2 w-2 rounded-full bg-[#d4af37] shadow-[0_0_18px_rgba(212,175,55,0.8)]" aria-hidden="true" />
-                        {category}
+                        {categoryLabel(category)}
                     </p>
                     <span className="h-px flex-1 bg-gradient-to-r from-[#d4af37]/35 via-[#d4af37]/10 to-transparent" aria-hidden="true" />
                 </div>

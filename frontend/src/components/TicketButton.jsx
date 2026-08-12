@@ -20,7 +20,7 @@ export const TicketButton = ({
         outline: "bg-transparent text-[#f3e5ab] border border-[#f3e5ab]/40 hover:border-[#d4af37] hover:text-[#d4af37]",
     };
     return (
-        <span className={`inline-flex flex-col items-center gap-3 ${className}`}>
+        <div className={`inline-flex flex-col items-center gap-3 ${className}`}>
             <a
                 href={TICKET_URL}
                 data-testid={testId}
@@ -31,10 +31,10 @@ export const TicketButton = ({
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
             </a>
             {showNote && (
-                <span className="max-w-xs text-center text-xs leading-relaxed text-current opacity-60">
+                <p className="m-0 max-w-xs text-center text-xs leading-relaxed text-current opacity-60">
                     {eventConfig.ticketNote}
-                </span>
+                </p>
             )}
-        </span>
+        </div>
     );
 };

@@ -11,6 +11,7 @@ const ConnectionMotif = () => (
         <circle cx="540" cy="160" r="5" fill="#f3e5ab" />
         <circle cx="540" cy="160" r="14" stroke="#f3e5ab" strokeOpacity="0.4" />
         <text x="60" y="200" fill="#a1a1aa" fontSize="13" letterSpacing="3" textAnchor="middle" fontFamily="Manrope, sans-serif">INDIA</text>
+        <text x="300" y="200" fill="#d4af37" fontSize="16" letterSpacing="2" textAnchor="middle" fontFamily="Manrope, sans-serif">×</text>
         <text x="540" y="200" fill="#a1a1aa" fontSize="13" letterSpacing="3" textAnchor="middle" fontFamily="Manrope, sans-serif">AOTEAROA</text>
         <defs>
             <linearGradient id="g75" x1="0" y1="0" x2="600" y2="0" gradientUnits="userSpaceOnUse">
