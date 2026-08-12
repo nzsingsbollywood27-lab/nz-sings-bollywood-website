@@ -1,0 +1,150 @@
+{
+  "theme": "dark",
+  "typography": {
+    "fonts": {
+      "headings": "Playfair Display, serif",
+      "body": "Inter, sans-serif",
+      "accents": "Cormorant Garamond, serif"
+    },
+    "scale": {
+      "h1": "text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight",
+      "h2": "text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight",
+      "h3": "text-2xl sm:text-3xl font-medium",
+      "body": "text-base sm:text-lg leading-relaxed text-zinc-300",
+      "labels": "text-xs sm:text-sm uppercase tracking-[0.2em] font-bold text-yellow-500"
+    },
+    "rules": [
+      "Use Playfair Display for all major headings. Never use Inter for headings.",
+      "Use tight letter spacing (tracking-tight) for large headings.",
+      "Uppercase tracking-widest for overlines and small labels.",
+      "Ensure heading color contrast meets minimum 4.5:1 ratio against dark backgrounds."
+    ]
+  },
+  "colors": {
+    "primary": {
+      "brand": "#D4AF37",
+      "hover": "#F3E5AB"
+    },
+    "background": {
+      "base": "#050505",
+      "surface": "#0F0F11",
+      "card": "#151515"
+    },
+    "text": {
+      "primary": "#FFFFFF",
+      "secondary": "#A1A1AA",
+      "accent": "#D4AF37"
+    },
+    "accents": {
+      "gold": "#D4AF37",
+      "champagne": "#F3E5AB",
+      "silver": "#C0C0C0"
+    },
+    "rules": [
+      "Never use pure black (#000000). Use #050505 (Deep Void) as the base.",
+      "Sponsor and partner logos must appear in premium white-card treatment to ensure readability on the dark site.",
+      "Use gold and champagne primarily for interactions, accents, and prominent BUY TICKETS CTAs."
+    ]
+  },
+  "layouts": {
+    "grid_system": "Bento-style and strict asymmetrical grids for visual tension. Base grid-cols-1 md:grid-cols-12 with gap-8 to gap-12.",
+    "spacing": "Generous spacing philosophy. Use py-24, py-32 for sections to give breathing room.",
+    "container": "Max width 7xl, center aligned but content itself should often be left-aligned for reading flow.",
+    "sections": [
+      "Hero: Large kinetic hero, masked line-by-line reveal, countdown timer.",
+      "Initiative By: 3 Organiser logos under the hero.",
+      "The Show / 90s with 90: Numbered manifesto chapters, stats, quotes.",
+      "75 Years: India-NZ connection.",
+      "Partners: White cards on dark background for logos.",
+      "Tickets: Conversion CTA block, repeated.",
+      "Team: 3 profile cards.",
+      "News: Editorial cards layout.",
+      "FAQ: Accordion style."
+    ]
+  },
+  "motion": {
+    "libraries": [
+      "framer-motion",
+      "lenis"
+    ],
+    "rules": [
+      "Use Lenis for smooth momentum scrolling.",
+      "Framer Motion for scroll reveals (e.g., masking line-by-line for headings).",
+      "One slow editorial marquee using react-fast-marquee for partners or news.",
+      "Hover effects on cards should be subtle lifts (-translate-y-1) and soft gold glows.",
+      "Respect prefers-reduced-motion for accessibility."
+    ]
+  },
+  "visual_enhancers": {
+    "effects": [
+      "Cinematic stage lighting effects using subtle radial gradients (e.g., radial-gradient(circle at top, rgba(212,175,55,0.1), transparent 50%)).",
+      "Glassmorphism for sticky header (backdrop-blur-xl bg-black/60).",
+      "White-card treatment for partner logos: bg-white text-black with subtle inner shadow."
+    ],
+    "3d_libraries": [
+      "Use Framer Motion 3D or react-spring-parallax for a subtle parallax or 3D hero moment."
+    ]
+  },
+  "components": {
+    "custom": [
+      "Cinematic Hero with Countdown",
+      "Numbered Manifesto Chapters",
+      "Editorial Marquee",
+      "White Partner Cards"
+    ],
+    "shadcn": [
+      "Accordion (for FAQ)",
+      "Button (for BUY TICKETS)",
+      "Input / Textarea (for Contact form)"
+    ],
+    "rules": [
+      "Always customize Shadcn to fit the cinematic dark/gold theme.",
+      "BUY TICKETS button must be the most visually prominent element on the screen.",
+      "Add `data-testid` to all interactive elements."
+    ]
+  },
+  "media": {
+    "image_urls": {
+      "hero_backgrounds": [
+        "https://images.pexels.com/photos/14719432/pexels-photo-14719432.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "https://images.pexels.com/photos/5182979/pexels-photo-5182979.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      ],
+      "texture_elements": [
+        "https://images.unsplash.com/photo-1578337834535-357ad7dccdfd?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODd8MHwxfHNlYXJjaHwxfHxkYXJrJTIwdGhlYXRlciUyMHN0YWdlJTIwY3VydGFpbnN8ZW58MHx8fHwxNzgzNjY3NzcxfDA&ixlib=rb-4.1.0&q=85"
+      ],
+      "cultural_fusion": [
+        "https://images.unsplash.com/photo-1633411988188-6e63354a9019?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNDR8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjBjbGFzc2ljYWwlMjBtdXNpYyUyMGZ1c2lvbiUyMHBlcmZvcm1hbmNlfGVufDB8fHx8MTc4NjUyNzQ2MXww&ixlib=rb-4.1.0&q=85",
+        "https://images.unsplash.com/photo-1570797803365-c6eb43b1f040?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNDR8MHwxfHNlYXJjaHwzfHxpbmRpYW4lMjBjbGFzc2ljYWwlMjBtdXNpYyUyMGZ1c2lvbiUyMHBlcmZvcm1hbmNlfGVufDB8fHx8MTc4NjUyNzQ2MXww&ixlib=rb-4.1.0&q=85"
+      ],
+      "partner_logos": [
+        "https://images.unsplash.com/photo-1586867026567-b9b63ae58472?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHw0fHxicmFuZCUyMGxvZ28lMjB3aGl0ZSUyMGJhY2tncm91bmR8ZW58MHx8fHwxNzg2NDc5MDEwfDA&ixlib=rb-4.1.0&q=85",
+        "https://images.unsplash.com/photo-1644166186783-35d911470ff0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwxfHxicmFuZCUyMGxvZ28lMjB3aGl0ZSUyMGJhY2tncm91bmR8ZW58MHx8fHwxNzg2NDc5MDEwfDA&ixlib=rb-4.1.0&q=85"
+      ],
+      "team_portraits": [
+        "https://images.pexels.com/photos/17685845/pexels-photo-17685845.jpeg",
+        "https://images.pexels.com/photos/10620268/pexels-photo-10620268.jpeg",
+        "https://images.pexels.com/photos/12396627/pexels-photo-12396627.jpeg"
+      ]
+    },
+    "rules": [
+      "Use partner logos within white cards.",
+      "Team portraits should be elegant and high contrast.",
+      "Hero background should have a heavy black overlay (bg-black/60) to ensure text and branding elements pop."
+    ]
+  },
+  "accessibility": {
+    "contrast": "Ensure minimum 4.5:1 for standard text and 3:1 for large headings.",
+    "interaction": "Explicitly define focus states with gold rings (focus:ring-2 focus:ring-yellow-500).",
+    "aria": "Include proper ARIA labels for all interactive elements, particularly the BUY TICKETS button and FAQ toggles."
+  },
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": [
+    "Do not converge toward generic outputs. Use Playfair Display for headings and generous spacing to make the site feel like a premium cultural production.",
+    "Implement Lenis for smooth momentum scrolling and Framer Motion for scroll reveals.",
+    "Do NOT use complete transparent backgrounds for the sticky header; use backdrop-blur-xl bg-black/60.",
+    "Always use data-testid attributes for buttons, links, and forms.",
+    "Avoid generic centered layouts except for the hero. Use left-aligned bento grids and asymmetric layouts to create tension.",
+    "DO NOT use Inter or Roboto for headings. Playfair Display is mandatory.",
+    "Missing categories (like logos) MUST use the provided URLs above, NEVER placeholder text or dummy image URLs.",
+    "Add 'use client' at the top of components utilizing Framer Motion or React hooks."
+  ]
+}
