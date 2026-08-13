@@ -3,28 +3,27 @@ const ITEMS = [
     "ONE STAGE",
     "75 YEARS OF CONNECTION",
     "A WORLD-FIRST MUSICAL CELEBRATION",
-    "NEW ZEALAND PAYS TRIBUTE TO BOLLYWOOD",
+    "NEW ZEALAND SINGS FOR INDIA",
 ];
 
-export const Marquee = ({ inverted = false }) => {
-    const row = [...ITEMS, ...ITEMS, ...ITEMS];
+export const Marquee = () => {
+    const sequence = [...ITEMS, ...ITEMS];
+
     return (
         <div
             data-testid="editorial-marquee"
             aria-hidden="true"
-            className={`relative overflow-hidden border-y py-5 ${
-                inverted ? "border-black/10 bg-[#d4af37]" : "border-[#d4af37]/15 bg-[#0a0906]"
-            }`}
+            className="relative overflow-hidden border-y border-black/10 bg-[#d4af37] py-5 shadow-[0_0_35px_rgba(212,175,55,0.22)]"
         >
-            <div className="marquee-track flex w-max items-center">
-                {[0, 1].map((half) => (
-                    <div key={half} className="flex items-center">
-                        {row.map((item, i) => (
-                            <span key={`${half}-${i}`} className="flex items-center">
-                                <span className={`font-accent px-8 text-lg italic tracking-wide sm:text-xl ${inverted ? "text-black" : "text-[#d4af37]/80"}`}>
+            <div className="marquee-track flex w-max min-w-full items-center whitespace-nowrap">
+                {[0, 1].map((group) => (
+                    <div key={group} className="flex shrink-0 items-center">
+                        {sequence.map((item, index) => (
+                            <span key={`${group}-${index}`} className="flex shrink-0 items-center">
+                                <span className="font-accent px-8 text-lg font-semibold italic tracking-wide text-black sm:text-xl md:text-2xl">
                                     {item}
                                 </span>
-                                <span className={`text-[10px] ${inverted ? "text-black/50" : "text-[#d4af37]/40"}`}>&#10022;</span>
+                                <span className="text-[11px] text-black/45">&#10022;</span>
                             </span>
                         ))}
                     </div>

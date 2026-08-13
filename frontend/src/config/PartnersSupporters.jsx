@@ -73,7 +73,7 @@ export const PartnersSupporters = () => {
 
                 <Reveal delay={0.1} className="mt-20">
                     <p className="mb-5 flex items-center gap-4 text-[11px] font-bold uppercase tracking-[0.35em] text-[#c0c0c0]">
-                        Supporters & Production Partners
+                        Supporters
                         <span className="h-px flex-1 bg-white/10" aria-hidden="true" />
                     </p>
                     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

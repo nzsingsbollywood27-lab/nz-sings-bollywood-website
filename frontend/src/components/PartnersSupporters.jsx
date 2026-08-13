@@ -19,15 +19,15 @@ const partnerGridClass = (count, isFeatured) => {
 };
 
 const LogoOrName = ({ partner, isFeatured }) => {
-    const nameClass = `${isFeatured ? "text-xl md:text-2xl" : "text-base md:text-lg"} font-display text-center font-semibold leading-snug text-white`;
+    const nameClass = `${isFeatured ? "text-xl md:text-2xl" : "text-base md:text-lg"} font-display text-center font-semibold leading-snug text-zinc-950`;
 
     if (!partner.logo) {
-        return <span className={nameClass}>{partner.name}</span>;
+        return <span className={`${nameClass} px-4 py-5`}>{partner.name}</span>;
     }
 
     return (
         <>
-            <span className="flex min-h-[72px] w-full items-center justify-center rounded-xl bg-[#f8f3e8] px-5 py-4 shadow-[inset_0_0_0_1px_rgba(212,175,55,0.18),0_14px_36px_rgba(0,0,0,0.28)]">
+            <span className="flex min-h-[112px] w-full items-center justify-center rounded-xl bg-white px-6 py-6 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.06)] md:min-h-[128px]" data-logo-plaque>
                 <img
                     src={partner.logo}
                     alt={partner.name}
@@ -37,43 +37,49 @@ const LogoOrName = ({ partner, isFeatured }) => {
                         const fallback = event.currentTarget.closest("[data-partner-card]").querySelector("[data-logo-fallback]");
                         if (fallback) fallback.style.display = "block";
                     }}
-                    className={`${isFeatured ? "max-h-20" : "max-h-14"} w-auto max-w-full object-contain`}
+                    className={`${isFeatured ? "max-h-28 md:max-h-32" : "max-h-20 md:max-h-24"} w-auto max-w-[92%] object-contain`}
                 />
             </span>
-            <span data-logo-fallback className={`${nameClass} hidden`}>
+            <span data-logo-fallback className={`${nameClass} hidden px-4 py-5`}>
                 {partner.name}
             </span>
         </>
     );
 };
 
-const PartnerCard = ({ partner, testId, isFeatured }) => (
-    <a
-        href={partner.url || "#"}
-        data-testid={testId}
-        data-partner-card
-        aria-label={partner.name}
-        title={partner.name}
-        className={`group relative flex flex-col items-center justify-center overflow-hidden rounded-2xl border border-[#d4af37]/15 bg-black/45 text-center shadow-[0_18px_60px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-[#d4af37]/55 hover:bg-black/65 ${
-            isFeatured ? "min-h-[180px] px-7 py-7" : "min-h-[146px] px-5 py-5"
-        }`}
-    >
-        <span
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.14),transparent_66%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-            aria-hidden="true"
-        />
+const PartnerCard = ({ partner, testId, isFeatured }) => {
+    const isExternal = partner.url && partner.url !== "#";
 
-        <span data-logo-plaque className="relative flex w-full items-center justify-center">
-            <LogoOrName partner={partner} isFeatured={isFeatured} />
-        </span>
+    return (
+        <a
+            href={partner.url || "#"}
+            data-testid={testId}
+            data-partner-card
+            aria-label={partner.name}
+            title={partner.name}
+            target={isExternal ? "_blank" : undefined}
+            rel={isExternal ? "noreferrer" : undefined}
+            className={`group relative flex flex-col items-center justify-center overflow-hidden rounded-2xl border border-[#d4af37]/20 bg-white text-center shadow-[0_18px_60px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-[#d4af37]/70 hover:shadow-[0_22px_70px_rgba(212,175,55,0.16)] ${
+                isFeatured ? "min-h-[190px] px-5 py-5 md:px-7 md:py-7" : "min-h-[164px] px-4 py-4 md:px-5 md:py-5"
+            }`}
+        >
+            <span
+                className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.12),transparent_70%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                aria-hidden="true"
+            />
 
-        {partner.logo && (
-            <span className="relative mt-4 block text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-400 transition-colors duration-300 group-hover:text-[#d4af37]">
-                {partner.name}
+            <span className="relative flex w-full items-center justify-center">
+                <LogoOrName partner={partner} isFeatured={isFeatured} />
             </span>
-        )}
-    </a>
-);
+
+            {partner.logo && (
+                <span className="relative mt-4 block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-600 transition-colors duration-300 group-hover:text-[#8a6a10]">
+                    {partner.name}
+                </span>
+            )}
+        </a>
+    );
+};
 
 const CategoryBlock = ({ category, partners, index }) => {
     const isFeatured = FEATURED_CATEGORIES.has(category);
@@ -135,9 +141,6 @@ export const PartnersSupporters = () => {
                         <h3 className="font-display mt-3 text-3xl font-semibold text-white md:text-5xl">
                             Proudly supported by our partners
                         </h3>
-                        <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-zinc-400">
-                            A premium sponsor wall for the organisations helping bring this landmark cultural production to life.
-                        </p>
                     </div>
 
                     <div className="space-y-6">
@@ -154,27 +157,32 @@ export const PartnersSupporters = () => {
 
                 <Reveal delay={0.1} className="mt-20">
                     <p className="mb-5 flex items-center gap-4 text-[11px] font-bold uppercase tracking-[0.35em] text-[#c0c0c0]">
-                        Supporters & Production Partners
+                        Supporters
                         <span className="h-px flex-1 bg-white/10" aria-hidden="true" />
                     </p>
                     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                        {supportersConfig.map((supporter, index) => (
-                            <a
-                                key={supporter.name}
-                                href={supporter.url}
-                                data-testid={`supporter-logo-${index}`}
-                                aria-label={supporter.name}
-                                className="group flex min-h-[96px] items-center justify-center rounded-xl border border-white/15 bg-white/[0.03] p-6 transition-[border-color,transform] duration-300 hover:-translate-y-1 hover:border-[#d4af37]/50"
-                            >
-                                {supporter.logo ? (
-                                    <img src={supporter.logo} alt={supporter.name} loading="lazy" className="max-h-12 w-auto object-contain" />
-                                ) : (
-                                    <span className="font-display text-center text-base font-medium leading-snug text-zinc-200 transition-colors duration-300 group-hover:text-[#f3e5ab]">
-                                        {supporter.name}
-                                    </span>
-                                )}
-                            </a>
-                        ))}
+                        {supportersConfig.map((supporter, index) => {
+                            const isExternal = supporter.url && supporter.url !== "#";
+                            return (
+                                <a
+                                    key={supporter.name}
+                                    href={supporter.url}
+                                    data-testid={`supporter-logo-${index}`}
+                                    aria-label={supporter.name}
+                                    target={isExternal ? "_blank" : undefined}
+                                    rel={isExternal ? "noreferrer" : undefined}
+                                    className="group flex min-h-[96px] items-center justify-center rounded-xl border border-white/15 bg-white/[0.03] p-6 transition-[border-color,transform] duration-300 hover:-translate-y-1 hover:border-[#d4af37]/50"
+                                >
+                                    {supporter.logo ? (
+                                        <img src={supporter.logo} alt={supporter.name} loading="lazy" className="max-h-12 w-auto object-contain" />
+                                    ) : (
+                                        <span className="font-display text-center text-base font-medium leading-snug text-zinc-200 transition-colors duration-300 group-hover:text-[#f3e5ab]">
+                                            {supporter.name}
+                                        </span>
+                                    )}
+                                </a>
+                            );
+                        })}
                     </div>
                     <p data-testid="charity-support-line" className="mt-8 text-center text-xs font-semibold uppercase tracking-[0.3em] text-[#d4af37]/80">
                         {charityConfig.line}

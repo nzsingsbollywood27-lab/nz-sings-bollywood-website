@@ -59,7 +59,7 @@ export const SeventyFiveYears = () => {
                             </p>
                             <p className="mt-6 text-base leading-relaxed text-zinc-300 md:text-lg">
                                 This concert is a <strong className="font-semibold text-[#f3e5ab]">musical tribute from New Zealand to
-                                Bollywood</strong>, celebrating its creativity, influence and enduring place in the cultural lives of people
+                                India</strong>, celebrating its creativity, influence and enduring place in the cultural lives of people
                                 across Aotearoa.
                             </p>
                         </Reveal>

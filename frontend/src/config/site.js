@@ -3,14 +3,15 @@ export const siteConfig = {
     shortName: "NZ Sings Bollywood",
     domain: "nzsingsbollywood.com",
     tagline: "A World-First Musical Celebration. A Night That Will Make History.",
-    coreMessage: "New Zealand Pays Tribute to Bollywood",
+    coreMessage: "New Zealand Sings for India",
     secondaryMessage: "Celebrating 75 years of India–New Zealand friendship through music",
     brandTitleImage: "/assets/brand-title.png",
     brandTitleHeaderImage: "/assets/brand-title-header.png",
     ogImage: "/assets/og-image.jpg",
     eventImages: {
         landscapePoster: "/assets/NZ Sings Bollywood - Landscape Poster.png",
-        portraitPoster: "/assets/NZ Sings Bollywood - Portrait Poster.png",
+        squarePoster: "/assets/NZ Sings Bollywood - Square Poster.png",
+        portraitPoster: "/assets/NZ Sings Bollywood - Potrait Size Poster.png",
     },
 };
 
@@ -28,9 +29,9 @@ export const eventConfig = {
 };
 
 // ─────────────────────────────────────────────────────────────
-// TICKET URL — replace "#tickets" with the TryBooking URL when available.
+// TICKET URL
 // This single constant powers every BUY TICKETS button on the site.
 // ─────────────────────────────────────────────────────────────
-export const TICKET_URL = "#tickets";
+export const TICKET_URL = "https://www.trybooking.com/nz/event/nzsingsbollywood-20813/sections?sessionId=77994";
 
 export const CONTACT_EMAIL = "nzsingsbollywood@gmail.com";

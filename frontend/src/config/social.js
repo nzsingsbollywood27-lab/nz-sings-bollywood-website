@@ -1,5 +1,4 @@
-// Placeholder links — replace with the official pages when available.
 export const socialConfig = {
     instagram: "#",
-    facebook: "#",
+    facebook: "https://www.facebook.com/share/1HYSM3UKJM/",
 };

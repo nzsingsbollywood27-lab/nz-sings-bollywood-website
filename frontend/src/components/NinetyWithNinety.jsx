@@ -10,7 +10,7 @@ const STATS = [
     { icon: Music, title: "Live Symphony Orchestra", sub: "St Matthew's Chamber Orchestra" },
     { icon: Guitar, title: "Contemporary Live Band", sub: "A full modern sound" },
     { icon: Globe2, title: "Multi-Ethnic Performers", sub: "From across Aotearoa" },
-    { icon: Disc3, title: "90s Bollywood Classics", sub: "Arranged in Mumbai" },
+    { icon: Disc3, title: "90s Bollywood Classics", sub: "Music re-arranged in Bollywood, Mumbai" },
 ];
 
 export const NinetyWithNinety = () => (
@@ -29,7 +29,7 @@ export const NinetyWithNinety = () => (
                 <div className="relative overflow-hidden rounded-2xl border border-[#d4af37]/20 bg-black shadow-[0_30px_100px_rgba(0,0,0,0.55)]">
                     <img
                         src={siteConfig.eventImages.landscapePoster}
-                        alt="NZ Sings Bollywood – 90s with 90 landscape poster showing 90 performers, choir and live symphony orchestra"
+                        alt="Latest NZ Sings Bollywood – 90s with 90 event poster showing 90 performers, choir and live symphony orchestra"
                         loading="lazy"
                         className="w-full object-cover"
                     />

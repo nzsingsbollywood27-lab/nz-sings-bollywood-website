@@ -20,7 +20,6 @@ export const Hero = () => {
     const ref = useRef(null);
     const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
     const numY = useTransform(scrollYProgress, [0, 1], ["0%", "38%"]);
-    const fade = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
 
     const particles = useMemo(
         () =>
@@ -52,18 +51,36 @@ export const Hero = () => {
                 />
             ))}
 
-            <motion.div style={{ opacity: fade }} className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-5 py-16 text-center md:px-8">
+            <motion.div className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-5 py-16 text-center md:px-8">
+                <motion.div
+                    data-testid="hero-event-poster"
+                    className="relative w-full max-w-[360px] overflow-hidden rounded-2xl border border-[#d4af37]/30 bg-[#080604] p-2 shadow-[0_0_55px_rgba(212,175,55,0.24)] sm:max-w-[440px] lg:max-w-[500px]"
+                    initial={{ opacity: 0, scale: 0.94, y: 24, filter: "blur(14px)" }}
+                    animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
+                    transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+                >
+                    <picture>
+                        <source media="(max-width: 640px)" srcSet="/assets/NZ Sings Bollywood - Potrait Size Poster.png" />
+                        <img
+                            src="/assets/NZ Sings Bollywood - Square Poster.png"
+                            alt="NZ Sings Bollywood – 90s with 90 event poster"
+                            className="h-auto w-full rounded-xl object-cover"
+                            loading="eager"
+                        />
+                    </picture>
+                </motion.div>
+
                 <motion.img
                     src={siteConfig.brandTitleImage}
                     alt="New Zealand Sings Bollywood – 90's with 90"
                     data-testid="hero-brand-title"
-                    className="w-full max-w-xl drop-shadow-[0_0_45px_rgba(212,175,55,0.25)] md:max-w-2xl"
-                    initial={{ opacity: 0, scale: 0.94, filter: "blur(14px)" }}
-                    animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                    transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+                    className="mt-8 w-full max-w-xs drop-shadow-[0_0_35px_rgba(212,175,55,0.2)] sm:max-w-sm md:max-w-md"
+                    initial={{ opacity: 0, y: 18 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.25, duration: 1, ease: [0.22, 1, 0.36, 1] }}
                 />
 
-                <h1 className="font-display mt-10 max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-6xl">
+                <h1 className="font-display mt-8 max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-6xl">
                     <MaskedLine delay={0.5}>A World-First Musical Celebration.</MaskedLine>
                     <MaskedLine delay={0.68} className="gold-text mt-1 pb-2 italic">A Night That Will Make History.</MaskedLine>
                 </h1>
@@ -121,16 +138,16 @@ export const Hero = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1.85, duration: 1 }}
-                    className="mt-14 grid w-full max-w-4xl grid-cols-1 gap-3 text-left sm:grid-cols-2 lg:grid-cols-3"
+                    className="mt-14 grid w-full max-w-4xl grid-cols-1 gap-4 text-left sm:grid-cols-2 lg:grid-cols-3"
                 >
                     {HIGHLIGHTS.map(({ icon: Icon, text }, i) => (
                         <li
                             key={i}
                             data-testid={`hero-highlight-${i}`}
-                            className="flex items-center gap-3 rounded-lg border border-[#d4af37]/15 bg-white/[0.02] px-4 py-3 backdrop-blur-sm transition-colors duration-300 hover:border-[#d4af37]/40"
+                            className="flex items-center gap-3.5 rounded-xl border border-[#d4af37]/18 bg-white/[0.035] px-5 py-4 backdrop-blur-sm transition-colors duration-300 hover:border-[#d4af37]/40"
                         >
-                            <Icon className="h-4 w-4 shrink-0 text-[#d4af37]" aria-hidden="true" />
-                            <span className="text-xs leading-snug text-zinc-300">{text}</span>
+                            <Icon className="h-5 w-5 shrink-0 text-[#d4af37]" aria-hidden="true" />
+                            <span className="text-sm font-medium leading-snug text-zinc-200 sm:text-[15px]">{text}</span>
                         </li>
                     ))}
                 </motion.ul>

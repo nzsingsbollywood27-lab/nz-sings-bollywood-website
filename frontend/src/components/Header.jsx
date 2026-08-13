@@ -22,9 +22,9 @@ export const Header = () => {
                 scrolled ? "border-b border-[#d4af37]/15 bg-black/75 backdrop-blur-xl" : "border-b border-transparent bg-transparent"
             }`}
         >
-            <div className="mx-auto flex h-[76px] max-w-7xl items-center justify-between px-5 md:px-8">
+            <div className="mx-auto flex h-[70px] max-w-7xl items-center justify-between px-4 sm:h-[76px] sm:px-5 md:px-8">
                 <a href="#home" data-testid="header-logo-link" aria-label="NZ Sings Bollywood – home" className="flex items-center">
-                    <img src={siteConfig.brandTitleHeaderImage} alt="NZ Sings Bollywood – 90s with 90" className="h-10 w-auto md:h-12" />
+                    <img src={siteConfig.brandTitleHeaderImage} alt="NZ Sings Bollywood – 90s with 90" className="h-8 w-auto sm:h-10 md:h-12" />
                 </a>
 
                 <nav aria-label="Primary" className="hidden items-center gap-7 xl:flex">
@@ -40,7 +40,7 @@ export const Header = () => {
                     ))}
                 </nav>
 
-                <div className="flex items-center gap-3 md:gap-4">
+                <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
                     <div className="hidden items-center gap-3 md:flex">
                         <a href={socialConfig.instagram} data-testid="header-instagram-link" aria-label="Instagram" className="text-zinc-400 transition-colors duration-300 hover:text-[#d4af37]">
                             <Instagram className="h-[18px] w-[18px]" />
@@ -49,14 +49,14 @@ export const Header = () => {
                             <Facebook className="h-[18px] w-[18px]" />
                         </a>
                     </div>
-                    <TicketButton size="sm" testId="header-buy-tickets-btn" className="hidden sm:inline-flex" />
+                    <TicketButton size="sm" testId="header-buy-tickets-btn" className="inline-flex" />
                     <button
                         type="button"
                         data-testid="mobile-menu-btn"
                         aria-label={open ? "Close menu" : "Open menu"}
                         aria-expanded={open}
                         onClick={() => setOpen(!open)}
-                        className="flex h-11 w-11 items-center justify-center rounded-full border border-[#d4af37]/30 text-[#f3e5ab] xl:hidden"
+                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#d4af37]/30 text-[#f3e5ab] sm:h-11 sm:w-11 xl:hidden"
                     >
                         {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
                     </button>

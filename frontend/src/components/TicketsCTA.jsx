@@ -14,7 +14,7 @@ export const TicketsCTA = () => (
         </span>
         <div className="relative mx-auto max-w-5xl px-5 text-center md:px-8">
             <Reveal>
-                <p className="text-[11px] font-extrabold uppercase tracking-[0.4em] text-black/60">Limited season — one night only</p>
+                <p className="text-[11px] font-extrabold uppercase tracking-[0.4em] text-black/60">One night only</p>
                 <h2 className="font-display mt-6 text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
                     BE PART OF THIS<br /><span className="italic">HISTORIC EVENT</span>
                 </h2>

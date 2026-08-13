@@ -52,7 +52,7 @@ export const TheShow = () => (
                     </Reveal>
                     <Reveal delay={0.45}>
                         <p className="mt-10 text-[11px] font-bold uppercase tracking-[0.3em] text-[#d4af37]">
-                            {`New Zealand Pays Tribute to Bollywood`}
+                            {`New Zealand Sings for India`}
                         </p>
                         <p className="mt-2 text-xs uppercase tracking-[0.2em] text-zinc-500">
                             Celebrating 75 years of India–New Zealand friendship through music
