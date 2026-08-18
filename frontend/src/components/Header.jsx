@@ -2,11 +2,18 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Instagram, Facebook, Menu, X } from "lucide-react";
 import { navigationConfig, socialConfig, siteConfig } from "../config";
+import { useCms } from "../cms/CmsProvider";
 import { TicketButton } from "./TicketButton";
 
+const activeLink = (href) => href && href !== "#";
+
 export const Header = () => {
+    const { content } = useCms();
     const [scrolled, setScrolled] = useState(false);
     const [open, setOpen] = useState(false);
+    const navigation = content.navigation || navigationConfig;
+    const social = content.social || socialConfig;
+    const site = content.site || siteConfig;
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 32);
@@ -23,14 +30,14 @@ export const Header = () => {
             }`}
         >
             <div className="mx-auto flex h-[70px] max-w-7xl items-center justify-between px-4 sm:h-[76px] sm:px-5 md:px-8">
-                <a href="#home" data-testid="header-logo-link" aria-label="NZ Sings Bollywood – home" className="flex items-center">
-                    <img src={siteConfig.brandTitleHeaderImage} alt="NZ Sings Bollywood – 90s with 90" className="h-8 w-auto sm:h-10 md:h-12" />
+                <a href="#home" data-testid="header-logo-link" aria-label={`${site.shortName || site.name} – home`} className="flex items-center">
+                    <img data-cms-img-key="site.brandTitleHeaderImage" src={site.brandTitleHeaderImage} alt={site.name} className="h-8 w-auto sm:h-10 md:h-12" />
                 </a>
 
                 <nav aria-label="Primary" className="hidden items-center gap-7 xl:flex">
-                    {navigationConfig.map((item) => (
+                    {navigation.map((item) => (
                         <a
-                            key={item.href}
+                            key={`${item.label}-${item.href}`}
                             href={item.href}
                             data-testid={`nav-link-${item.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
                             className="text-[11px] font-semibold uppercase tracking-[0.24em] text-zinc-300 transition-colors duration-300 hover:text-[#d4af37]"
@@ -42,10 +49,10 @@ export const Header = () => {
 
                 <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
                     <div className="hidden items-center gap-3 md:flex">
-                        <a href={socialConfig.instagram} data-testid="header-instagram-link" aria-label="Instagram" className="text-zinc-400 transition-colors duration-300 hover:text-[#d4af37]">
+                        <a href={activeLink(social.instagram) ? social.instagram : "#news"} data-cms-link-key="social.instagram" data-testid="header-instagram-link" aria-label="Instagram" className="text-zinc-400 transition-colors duration-300 hover:text-[#d4af37]">
                             <Instagram className="h-[18px] w-[18px]" />
                         </a>
-                        <a href={socialConfig.facebook} data-testid="header-facebook-link" aria-label="Facebook" className="text-zinc-400 transition-colors duration-300 hover:text-[#d4af37]">
+                        <a href={activeLink(social.facebook) ? social.facebook : "#news"} data-cms-link-key="social.facebook" data-testid="header-facebook-link" aria-label="Facebook" className="text-zinc-400 transition-colors duration-300 hover:text-[#d4af37]">
                             <Facebook className="h-[18px] w-[18px]" />
                         </a>
                     </div>
@@ -74,9 +81,9 @@ export const Header = () => {
                         className="border-t border-[#d4af37]/15 bg-black/95 px-6 pb-10 pt-6 backdrop-blur-xl xl:hidden"
                     >
                         <div className="flex flex-col gap-1">
-                            {navigationConfig.map((item, i) => (
+                            {navigation.map((item, i) => (
                                 <motion.a
-                                    key={item.href}
+                                    key={`${item.label}-${item.href}`}
                                     href={item.href}
                                     data-testid={`mobile-nav-link-${item.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
                                     onClick={() => setOpen(false)}
@@ -91,10 +98,10 @@ export const Header = () => {
                         </div>
                         <div className="mt-8 flex items-center justify-between">
                             <div className="flex items-center gap-5">
-                                <a href={socialConfig.instagram} data-testid="mobile-instagram-link" aria-label="Instagram" className="text-zinc-400 hover:text-[#d4af37]">
+                                <a href={activeLink(social.instagram) ? social.instagram : "#news"} data-cms-link-key="social.instagram" data-testid="mobile-instagram-link" aria-label="Instagram" className="text-zinc-400 hover:text-[#d4af37]">
                                     <Instagram className="h-5 w-5" />
                                 </a>
-                                <a href={socialConfig.facebook} data-testid="mobile-facebook-link" aria-label="Facebook" className="text-zinc-400 hover:text-[#d4af37]">
+                                <a href={activeLink(social.facebook) ? social.facebook : "#news"} data-cms-link-key="social.facebook" data-testid="mobile-facebook-link" aria-label="Facebook" className="text-zinc-400 hover:text-[#d4af37]">
                                     <Facebook className="h-5 w-5" />
                                 </a>
                             </div>

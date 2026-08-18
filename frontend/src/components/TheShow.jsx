@@ -1,9 +1,15 @@
 import { siteConfig } from "../config";
+import { useCms } from "../cms/CmsProvider";
 import { ChapterHeading } from "./ChapterHeading";
 import { Reveal } from "./Reveal";
 
 
-export const TheShow = () => (
+export const TheShow = () => {
+    const { content } = useCms();
+    const site = content.site || siteConfig;
+    const section = content.sections?.show || {};
+
+    return (
     <section id="the-show" data-testid="the-show-section" className="stage-glow relative py-24 md:py-32">
         <div className="mx-auto max-w-7xl px-5 md:px-8">
             <ChapterHeading number="01" overline="The Show" title={<>A World-First<br /><span className="gold-text italic">Musical Celebration</span></>} />
@@ -14,7 +20,8 @@ export const TheShow = () => (
                         <div className="absolute -inset-4 rounded-2xl bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.18),transparent_65%)]" aria-hidden="true" />
                         <div className="relative overflow-hidden rounded-xl border border-[#d4af37]/25 shadow-[0_30px_80px_rgba(0,0,0,0.6)]">
                             <img
-                                src={siteConfig.eventImages.portraitPoster}
+                                data-cms-img-key="site.eventImages.portraitPoster"
+                                src={site.eventImages?.portraitPoster || siteConfig.eventImages.portraitPoster}
                                 alt="NZ Sings Bollywood – 90s with 90 portrait poster showing choir and live symphony orchestra"
                                 data-testid="the-show-image"
                                 loading="lazy"
@@ -22,7 +29,7 @@ export const TheShow = () => (
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20" aria-hidden="true" />
                             <p className="font-accent absolute bottom-5 left-5 right-5 text-lg italic leading-snug text-[#f3e5ab]">
-                                "This is not just another Bollywood concert."
+                                {section.posterQuote || "This is not just another Bollywood concert."}
                             </p>
                         </div>
                     </div>
@@ -62,4 +69,5 @@ export const TheShow = () => (
             </div>
         </div>
     </section>
-);
+    );
+};

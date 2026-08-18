@@ -18,8 +18,8 @@ const groups = [
     { id: "general", label: "General", heading: "General site information", help: "Website identity, contact details and primary messaging.", paths: ["site.name", "site.shortName", "site.domain", "site.tagline", "site.coreMessage", "site.secondaryMessage", "contactEmail"] },
     { id: "event", label: "Event & tickets", heading: "Event and ticket details", help: "Dates, times, venue information, countdown and ticket settings.", paths: ["event", "ticketUrl", "sections.tickets"] },
     { id: "sections", label: "Page sections", heading: "Page section text", help: "Headings, paragraphs, descriptions and calls to action, arranged by website section.", paths: ["sections.show", "sections.years90", "sections.years75", "sections.partners", "sections.team", "sections.news", "sections.faq", "sections.contact", "sections.footer", "sections.marquee"] },
-    { id: "images", label: "Brand & posters", heading: "Brand images and event posters", help: "Upload-safe image tools. The CMS now resizes and pads images to protect the live layout.", paths: ["site.brandTitleImage", "site.brandTitleHeaderImage", "site.ogImage", "site.eventImages"] },
-    { id: "navigation", label: "Navigation & social", heading: "Navigation and social media", help: "Header links, footer links and social profiles.", paths: ["navigation", "footerNavigation", "social"] },
+    { id: "images", label: "Brand & posters", heading: "Brand images and event posters", help: "Upload-safe image tools. The CMS resizes, trims transparent logo padding where possible, and protects the live layout.", paths: ["site.brandTitleImage", "site.brandTitleHeaderImage", "site.ogImage", "site.eventImages"] },
+    { id: "navigation", label: "Navigation & social", heading: "Navigation and social media", help: "Header links, footer links and social profiles. Instagram and Facebook update Section 06 plus the header and footer icons.", paths: ["navigation", "footerNavigation", "social"] },
     { id: "organisers", label: "Organisers", heading: "Organisers", help: "Names, links and logos for event organisers.", paths: ["organisers"] },
     { id: "partners", label: "Partners", heading: "Partners by category", help: "Partner categories, names, links and logos. Uploaded logos are padded so they display consistently.", paths: ["partners"] },
     { id: "supporters", label: "Supporters", heading: "Supporters and charity", help: "Supporter logos, links and charity messaging.", paths: ["supporters", "charity"] },
@@ -30,8 +30,8 @@ const groups = [
 ];
 
 const IMAGE_PROFILES = {
-    logo: { label: "Logo safe fit", width: 1200, height: 675, fit: "contain", background: "transparent", note: "Logos are padded, not cropped. Best for organiser, partner and supporter logos." },
-    headerLogo: { label: "Header logo safe fit", width: 1400, height: 520, fit: "contain", background: "transparent", note: "Keeps the title/logo sharp without stretching the header." },
+    logo: { label: "Logo safe fit", width: 900, height: 420, fit: "contain", background: "transparent", note: "Logos are auto-trimmed where possible, then padded without cropping. Best for organiser, partner and supporter logos." },
+    headerLogo: { label: "Header logo safe fit", width: 1200, height: 420, fit: "contain", background: "transparent", note: "Keeps the title/logo sharp without stretching the header." },
     portrait: { label: "Portrait safe fit", width: 1000, height: 1250, fit: "contain", background: "#050505", note: "Portraits are padded to the website card shape so heads/faces are not cropped." },
     squarePoster: { label: "Square poster", width: 1400, height: 1400, fit: "contain", background: "#050505", note: "Use for square event poster positions." },
     portraitPoster: { label: "Portrait poster", width: 1080, height: 1350, fit: "contain", background: "#050505", note: "Use for mobile/portrait poster positions." },
@@ -65,6 +65,50 @@ const canvasToBlob = (canvas, type = OUTPUT_TYPE, quality = OUTPUT_QUALITY) => n
     canvas.toBlob((blob) => (blob ? resolve(blob) : reject(new Error("Unable to prepare this image for upload."))), type, quality);
 });
 
+function getSourceRect(image, profile) {
+    if (!String(profile.label || "").toLowerCase().includes("logo")) {
+        return { sx: 0, sy: 0, sw: image.naturalWidth, sh: image.naturalHeight };
+    }
+
+    const trimCanvas = document.createElement("canvas");
+    trimCanvas.width = image.naturalWidth;
+    trimCanvas.height = image.naturalHeight;
+    const trimContext = trimCanvas.getContext("2d", { willReadFrequently: true });
+    trimContext.drawImage(image, 0, 0);
+
+    const { data, width, height } = trimContext.getImageData(0, 0, trimCanvas.width, trimCanvas.height);
+    let minX = width;
+    let minY = height;
+    let maxX = -1;
+    let maxY = -1;
+
+    for (let y = 0; y < height; y += 1) {
+        for (let x = 0; x < width; x += 1) {
+            const index = (y * width + x) * 4;
+            const alpha = data[index + 3];
+            if (alpha > 12) {
+                minX = Math.min(minX, x);
+                minY = Math.min(minY, y);
+                maxX = Math.max(maxX, x);
+                maxY = Math.max(maxY, y);
+            }
+        }
+    }
+
+    if (maxX < minX || maxY < minY) {
+        return { sx: 0, sy: 0, sw: image.naturalWidth, sh: image.naturalHeight };
+    }
+
+    const padding = Math.round(Math.max(maxX - minX, maxY - minY) * 0.04);
+    const sx = Math.max(0, minX - padding);
+    const sy = Math.max(0, minY - padding);
+    const ex = Math.min(width, maxX + padding);
+    const ey = Math.min(height, maxY + padding);
+
+    return { sx, sy, sw: Math.max(1, ex - sx), sh: Math.max(1, ey - sy) };
+}
+
+
 async function prepareImageForUpload(file, profile) {
     if (file.type === "image/gif") return { blob: file, extension: "gif", profileLabel: "Original GIF" };
 
@@ -80,17 +124,18 @@ async function prepareImageForUpload(file, profile) {
         context.fillRect(0, 0, canvas.width, canvas.height);
     }
 
+    const source = getSourceRect(image, profile);
     const scale = profile.fit === "cover"
-        ? Math.max(profile.width / image.naturalWidth, profile.height / image.naturalHeight)
-        : Math.min(profile.width / image.naturalWidth, profile.height / image.naturalHeight);
-    const drawWidth = Math.round(image.naturalWidth * scale);
-    const drawHeight = Math.round(image.naturalHeight * scale);
+        ? Math.max(profile.width / source.sw, profile.height / source.sh)
+        : Math.min(profile.width / source.sw, profile.height / source.sh);
+    const drawWidth = Math.round(source.sw * scale);
+    const drawHeight = Math.round(source.sh * scale);
     const drawX = Math.round((profile.width - drawWidth) / 2);
     const drawY = Math.round((profile.height - drawHeight) / 2);
 
     context.imageSmoothingEnabled = true;
     context.imageSmoothingQuality = "high";
-    context.drawImage(image, drawX, drawY, drawWidth, drawHeight);
+    context.drawImage(image, source.sx, source.sy, source.sw, source.sh, drawX, drawY, drawWidth, drawHeight);
     URL.revokeObjectURL(image.src);
 
     const blob = await canvasToBlob(canvas);
@@ -114,7 +159,7 @@ function ImageEditor({ label, value, onChange, upload, busy, fieldPath, fieldKey
             <p className="image-profile-note"><strong>{profile.label}.</strong> {profile.note}</p>
             <Field label="Image URL or asset path" value={value || ""} onChange={onChange} />
             <label className="upload-button">{busy ? "Uploading…" : "Upload replacement"}<input type="file" accept={TYPES.join(",")} disabled={busy} onChange={(e) => upload(e.target.files?.[0], onChange, e.target, fieldPath, fieldKey)} /></label>
-            <small>JPEG, PNG, WebP or GIF. Maximum 8 MB. Uploads are automatically resized and padded so they do not stretch or crop badly on the live site.</small>
+            <small>JPEG, PNG, WebP or GIF. Maximum 8 MB. Uploads are automatically prepared for the exact website area. Logos are trimmed where possible and then fitted into consistent white containers.</small>
         </div>
     </div>;
 }

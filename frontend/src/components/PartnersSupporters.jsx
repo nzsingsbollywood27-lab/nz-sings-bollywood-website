@@ -1,5 +1,6 @@
 import { ArrowDown } from "lucide-react";
 import { partnersConfig, supportersConfig, charityConfig } from "../config";
+import { useCms } from "../cms/CmsProvider";
 import { ChapterHeading } from "./ChapterHeading";
 import { Reveal } from "./Reveal";
 
@@ -18,7 +19,7 @@ const partnerGridClass = (count, isFeatured) => {
     return "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3";
 };
 
-const LogoOrName = ({ partner, isFeatured }) => {
+const LogoOrName = ({ partner, isFeatured, imgKey }) => {
     const nameClass = `${isFeatured ? "text-xl md:text-2xl" : "text-base md:text-lg"} font-display text-center font-semibold leading-snug text-zinc-950`;
 
     if (!partner.logo) {
@@ -27,8 +28,9 @@ const LogoOrName = ({ partner, isFeatured }) => {
 
     return (
         <>
-            <span className="flex min-h-[112px] w-full items-center justify-center rounded-xl bg-white px-6 py-6 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.06)] md:min-h-[128px]" data-logo-plaque>
+            <span className="flex min-h-[136px] w-full items-center justify-center rounded-xl bg-white px-4 py-4 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.06)] md:min-h-[156px]" data-logo-plaque>
                 <img
+                    data-cms-img-key={imgKey}
                     src={partner.logo}
                     alt={partner.name}
                     loading="lazy"
@@ -37,7 +39,7 @@ const LogoOrName = ({ partner, isFeatured }) => {
                         const fallback = event.currentTarget.closest("[data-partner-card]").querySelector("[data-logo-fallback]");
                         if (fallback) fallback.style.display = "block";
                     }}
-                    className={`${isFeatured ? "max-h-28 md:max-h-32" : "max-h-20 md:max-h-24"} w-auto max-w-[92%] object-contain`}
+                    className={`${isFeatured ? "max-h-36 md:max-h-40" : "max-h-28 md:max-h-32"} h-full w-full object-contain`}
                 />
             </span>
             <span data-logo-fallback className={`${nameClass} hidden px-4 py-5`}>
@@ -47,12 +49,13 @@ const LogoOrName = ({ partner, isFeatured }) => {
     );
 };
 
-const PartnerCard = ({ partner, testId, isFeatured }) => {
+const PartnerCard = ({ partner, testId, isFeatured, linkKey, imgKey }) => {
     const isExternal = partner.url && partner.url !== "#";
 
     return (
         <a
             href={partner.url || "#"}
+            data-cms-link-key={linkKey}
             data-testid={testId}
             data-partner-card
             aria-label={partner.name}
@@ -60,7 +63,7 @@ const PartnerCard = ({ partner, testId, isFeatured }) => {
             target={isExternal ? "_blank" : undefined}
             rel={isExternal ? "noreferrer" : undefined}
             className={`group relative flex flex-col items-center justify-center overflow-hidden rounded-2xl border border-[#d4af37]/20 bg-white text-center shadow-[0_18px_60px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-[#d4af37]/70 hover:shadow-[0_22px_70px_rgba(212,175,55,0.16)] ${
-                isFeatured ? "min-h-[190px] px-5 py-5 md:px-7 md:py-7" : "min-h-[164px] px-4 py-4 md:px-5 md:py-5"
+                isFeatured ? "min-h-[220px] px-5 py-5 md:px-7 md:py-7" : "min-h-[190px] px-4 py-4 md:px-5 md:py-5"
             }`}
         >
             <span
@@ -69,7 +72,7 @@ const PartnerCard = ({ partner, testId, isFeatured }) => {
             />
 
             <span className="relative flex w-full items-center justify-center">
-                <LogoOrName partner={partner} isFeatured={isFeatured} />
+                <LogoOrName partner={partner} isFeatured={isFeatured} imgKey={imgKey} />
             </span>
 
             {partner.logo && (
@@ -103,9 +106,11 @@ const CategoryBlock = ({ category, partners, index }) => {
                 <div className={partnerGridClass(partners.length, isFeatured)}>
                     {partners.map((partner, partnerIndex) => (
                         <PartnerCard
-                            key={partner.name}
+                            key={`${partner.name}-${partnerIndex}`}
                             partner={partner}
                             isFeatured={isFeatured}
+                            linkKey={`partners.${index}.partners.${partnerIndex}.url`}
+                            imgKey={`partners.${index}.partners.${partnerIndex}.logo`}
                             testId={`partner-logo-${category.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${partnerIndex}`}
                         />
                     ))}
@@ -116,7 +121,12 @@ const CategoryBlock = ({ category, partners, index }) => {
 };
 
 export const PartnersSupporters = () => {
-    const activeCategories = partnersConfig.filter((category) => category.partners.length > 0);
+    const { content } = useCms();
+    const partners = content.partners || partnersConfig;
+    const supporters = content.supporters || supportersConfig;
+    const charity = content.charity || charityConfig;
+    const section = content.sections?.partners || {};
+    const activeCategories = partners.filter((category) => category.partners?.length > 0);
 
     return (
         <section id="partners" data-testid="partners-section" className="relative overflow-hidden border-t border-[#d4af37]/10 bg-[#080706] py-24 md:py-32">
@@ -126,11 +136,10 @@ export const PartnersSupporters = () => {
             <div className="relative mx-auto max-w-7xl px-5 md:px-8">
                 <ChapterHeading
                     number="04"
-                    overline="Partners & Supporters"
-                    title={<>Made possible through <span className="gold-text italic">music, culture,<br className="hidden sm:block" /> diversity and community.</span></>}
+                    overline={section.overline || "Partners & Supporters"}
+                    title={<>{section.title || "Made possible through music, culture, diversity and community."}</>}
                 >
-                    90s with 90 is made possible through the support of organisations that believe in the power of music, culture, diversity and
-                    community. We thank our partners and supporters for helping bring New Zealand Sings Bollywood – 90s with 90 to the stage.
+                    {section.intro || "90s with 90 is made possible through the support of organisations that believe in the power of music, culture, diversity and community."}
                 </ChapterHeading>
 
                 <div className="mt-4 rounded-[2rem] border border-[#d4af37]/15 bg-black/30 p-4 shadow-[0_35px_120px_rgba(0,0,0,0.45)] md:p-6 lg:p-8">
@@ -146,7 +155,7 @@ export const PartnersSupporters = () => {
                     <div className="space-y-6">
                         {activeCategories.map((category, index) => (
                             <CategoryBlock
-                                key={category.category}
+                                key={`${category.category}-${index}`}
                                 category={category.category}
                                 partners={category.partners}
                                 index={index}
@@ -161,22 +170,23 @@ export const PartnersSupporters = () => {
                         <span className="h-px flex-1 bg-white/10" aria-hidden="true" />
                     </p>
                     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                        {supportersConfig.map((supporter, index) => {
+                        {supporters.map((supporter, index) => {
                             const isExternal = supporter.url && supporter.url !== "#";
                             return (
                                 <a
-                                    key={supporter.name}
-                                    href={supporter.url}
+                                    key={`${supporter.name}-${index}`}
+                                    href={supporter.url || "#"}
+                                    data-cms-link-key={`supporters.${index}.url`}
                                     data-testid={`supporter-logo-${index}`}
                                     aria-label={supporter.name}
                                     target={isExternal ? "_blank" : undefined}
                                     rel={isExternal ? "noreferrer" : undefined}
-                                    className="group flex min-h-[96px] items-center justify-center rounded-xl border border-white/15 bg-white/[0.03] p-6 transition-[border-color,transform] duration-300 hover:-translate-y-1 hover:border-[#d4af37]/50"
+                                    className="group flex min-h-[120px] items-center justify-center rounded-xl border border-white/15 bg-white p-5 transition-[border-color,transform] duration-300 hover:-translate-y-1 hover:border-[#d4af37]/50"
                                 >
                                     {supporter.logo ? (
-                                        <img src={supporter.logo} alt={supporter.name} loading="lazy" className="max-h-12 w-auto object-contain" />
+                                        <img data-cms-img-key={`supporters.${index}.logo`} src={supporter.logo} alt={supporter.name} loading="lazy" className="h-full max-h-24 w-full object-contain" />
                                     ) : (
-                                        <span className="font-display text-center text-base font-medium leading-snug text-zinc-200 transition-colors duration-300 group-hover:text-[#f3e5ab]">
+                                        <span className="font-display text-center text-base font-medium leading-snug text-zinc-900 transition-colors duration-300 group-hover:text-[#a8821f]">
                                             {supporter.name}
                                         </span>
                                     )}
@@ -185,18 +195,18 @@ export const PartnersSupporters = () => {
                         })}
                     </div>
                     <p data-testid="charity-support-line" className="mt-8 text-center text-xs font-semibold uppercase tracking-[0.3em] text-[#d4af37]/80">
-                        {charityConfig.line}
+                        {charity.line}
                     </p>
                 </Reveal>
 
                 <Reveal delay={0.15} className="mt-20 text-center">
-                    <p className="font-display text-2xl font-semibold text-white sm:text-3xl">Interested in partnering with us?</p>
+                    <p className="font-display text-2xl font-semibold text-white sm:text-3xl">{section.ctaTitle || "Interested in partnering with us?"}</p>
                     <a
                         href="#contact"
                         data-testid="become-a-partner-btn"
                         className="group mt-7 inline-flex items-center gap-3 rounded-full border border-[#d4af37]/60 px-10 py-4 text-sm font-bold uppercase tracking-[0.22em] text-[#d4af37] transition-[background-color,color,transform] duration-300 hover:-translate-y-0.5 hover:bg-[#d4af37] hover:text-black"
                     >
-                        Become a Partner
+                        {section.ctaLabel || "Become a Partner"}
                         <ArrowDown className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" aria-hidden="true" />
                     </a>
                 </Reveal>

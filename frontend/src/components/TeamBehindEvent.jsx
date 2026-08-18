@@ -1,4 +1,5 @@
 import { teamConfig } from "../config";
+import { useCms } from "../cms/CmsProvider";
 import { ChapterHeading } from "./ChapterHeading";
 import { Reveal } from "./Reveal";
 
@@ -11,6 +12,7 @@ const TeamCard = ({ member, index }) => (
             {member.photo ? (
                 <div className="mx-auto aspect-[4/5] w-full max-w-[280px] overflow-hidden rounded-2xl border border-[#d4af37]/25 bg-[#f7f7f4] shadow-[0_22px_60px_rgba(0,0,0,0.35)]">
                     <img
+                        data-cms-img-key={`team.${index}.photo`}
                         src={member.photo}
                         alt={`Portrait of ${member.name}`}
                         loading="lazy"
@@ -38,16 +40,20 @@ const TeamCard = ({ member, index }) => (
     </article>
 );
 
-export const TeamBehindEvent = () => (
+export const TeamBehindEvent = () => {
+    const { content } = useCms();
+    const team = content.team || teamConfig;
+    const section = content.sections?.team || {};
+
+    return (
     <section id="team" data-testid="team-section" className="relative border-t border-[#d4af37]/10 py-24 md:py-32">
         <div className="mx-auto max-w-7xl px-5 md:px-8">
-            <ChapterHeading number="05" overline="The Team Behind the Event" title={<>The visionaries <span className="gold-text italic">behind the production</span></>}>
-                New Zealand Sings Bollywood – 90s with 90 is proudly brought to life by Ashish Ramakrishnan, Dinesh Raniga and Basant Madhur —
-                partners who share a common vision of creating world-class cultural experiences that bring communities together through music.
+            <ChapterHeading number="05" overline={section.overline || "The Team Behind the Event"} title={<>{section.title || "The visionaries behind the production"}</>}>
+                {section.intro || "New Zealand Sings Bollywood – 90s with 90 is proudly brought to life by Ashish Ramakrishnan, Dinesh Raniga and Basant Madhur."}
             </ChapterHeading>
 
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {teamConfig.map((m, i) => (
+                {team.map((m, i) => (
                     <Reveal key={m.name} delay={0.08 * i}>
                         <TeamCard member={m} index={i} />
                     </Reveal>
@@ -56,10 +62,10 @@ export const TeamBehindEvent = () => (
 
             <Reveal delay={0.2} className="mt-16">
                 <p className="font-accent mx-auto max-w-3xl text-center text-xl italic leading-relaxed text-[#f3e5ab] md:text-2xl">
-                    Together, Ashish, Dinesh and Basant combine their expertise in event production, music and community leadership to create a
-                    world-class celebration of Bollywood, while commemorating 75 years of friendship between India and New Zealand.
+                    {section.closing || "Together, Ashish, Dinesh and Basant combine their expertise in event production, music and community leadership to create a world-class celebration of Bollywood, while commemorating 75 years of friendship between India and New Zealand."}
                 </p>
             </Reveal>
         </div>
     </section>
-);
+    );
+};

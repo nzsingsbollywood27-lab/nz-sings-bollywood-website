@@ -1,5 +1,6 @@
 import { Mic, Music, Guitar, Users, Globe2, Disc3, Quote } from "lucide-react";
 import { siteConfig } from "../config";
+import { useCms } from "../cms/CmsProvider";
 import { ChapterHeading } from "./ChapterHeading";
 import { Reveal } from "./Reveal";
 import { TicketButton } from "./TicketButton";
@@ -13,7 +14,11 @@ const STATS = [
     { icon: Disc3, title: "90s Bollywood Classics", sub: "Music re-arranged in Bollywood, Mumbai" },
 ];
 
-export const NinetyWithNinety = () => (
+export const NinetyWithNinety = () => {
+    const { content } = useCms();
+    const site = content.site || siteConfig;
+
+    return (
     <section id="90s-with-90" data-testid="ninety-section" className="relative border-t border-[#d4af37]/10 bg-[#080706] py-24 md:py-32">
         <div className="mx-auto max-w-7xl px-5 md:px-8">
             <ChapterHeading
@@ -28,7 +33,8 @@ export const NinetyWithNinety = () => (
             <Reveal delay={0.08} className="mb-14">
                 <div className="relative overflow-hidden rounded-2xl border border-[#d4af37]/20 bg-black shadow-[0_30px_100px_rgba(0,0,0,0.55)]">
                     <img
-                        src={siteConfig.eventImages.landscapePoster}
+                        data-cms-img-key="site.eventImages.landscapePoster"
+                        src={site.eventImages?.landscapePoster || siteConfig.eventImages.landscapePoster}
                         alt="Latest NZ Sings Bollywood – 90s with 90 event poster showing 90 performers, choir and live symphony orchestra"
                         loading="lazy"
                         className="w-full object-contain"
@@ -93,4 +99,5 @@ export const NinetyWithNinety = () => (
             </Reveal>
         </div>
     </section>
-);
+    );
+};

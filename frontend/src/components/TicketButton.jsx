@@ -1,14 +1,21 @@
-import { TICKET_URL, eventConfig } from "../config";
 import { ArrowRight } from "lucide-react";
+import { eventConfig, TICKET_URL } from "../config";
+import { useCms } from "../cms/CmsProvider";
 
 export const TicketButton = ({
-    label = "BUY TICKETS",
+    label,
     variant = "gold",
     size = "md",
     className = "",
     testId = "buy-tickets-btn",
     showNote = false,
 }) => {
+    const { content } = useCms();
+    const ticketLabel = label || content.sections?.tickets?.buttonLabel || "BUY TICKETS";
+    const ticketUrl = content.ticketUrl || TICKET_URL || "#tickets";
+    const eventName = content.event?.name || eventConfig.name;
+    const ticketNote = content.event?.ticketNote || eventConfig.ticketNote;
+
     const sizes = {
         sm: "px-3 py-2 text-[10px] sm:px-5 sm:py-2.5 sm:text-xs",
         md: "px-8 py-4 text-sm",
@@ -22,17 +29,18 @@ export const TicketButton = ({
     return (
         <div className={`inline-flex flex-col items-center gap-3 ${className}`}>
             <a
-                href={TICKET_URL}
+                href={ticketUrl}
                 data-testid={testId}
-                aria-label={`${label} — ${eventConfig.name}`}
+                data-cms-link-key="ticketUrl"
+                aria-label={`${ticketLabel} — ${eventName}`}
                 className={`group inline-flex items-center gap-2 whitespace-nowrap rounded-full font-bold uppercase tracking-[0.18em] sm:gap-3 sm:tracking-[0.22em] transition-[box-shadow,background-color,color,transform] duration-300 hover:-translate-y-0.5 ${sizes[size]} ${variants[variant]}`}
             >
-                {label}
+                {ticketLabel}
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
             </a>
             {showNote && (
                 <p className="m-0 max-w-xs text-center text-xs leading-relaxed text-current opacity-60">
-                    {eventConfig.ticketNote}
+                    {ticketNote}
                 </p>
             )}
         </div>
