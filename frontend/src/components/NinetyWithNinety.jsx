@@ -31,7 +31,7 @@ export const NinetyWithNinety = () => (
                         src={siteConfig.eventImages.landscapePoster}
                         alt="Latest NZ Sings Bollywood – 90s with 90 event poster showing 90 performers, choir and live symphony orchestra"
                         loading="lazy"
-                        className="w-full object-cover"
+                        className="w-full object-contain"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" aria-hidden="true" />
                 </div>

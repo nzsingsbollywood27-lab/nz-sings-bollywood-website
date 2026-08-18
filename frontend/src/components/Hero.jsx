@@ -64,7 +64,7 @@ export const Hero = () => {
                         <img
                             src="/assets/NZ Sings Bollywood - Square Poster.png"
                             alt="NZ Sings Bollywood – 90s with 90 event poster"
-                            className="h-auto w-full rounded-xl object-cover"
+                            className="h-auto w-full rounded-xl object-contain"
                             loading="eager"
                         />
                     </picture>

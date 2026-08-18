@@ -1,0 +1,260 @@
+diff --git a/CMS_SETUP.md b/CMS_SETUP.md
+new file mode 100644
+index 0000000..6cde965
+--- /dev/null
++++ b/CMS_SETUP.md
+@@ -0,0 +1,13 @@
++# CMS setup and local testing
++
++The CMS uses Supabase project `lyclaplowwxocbuuigyu`. Its browser publishable key is not a secret; RLS authorises only administrator UID `b0bc13c2-bee0-4bec-a4a3-7a5d84ba60ab`.
++
++1. Merge these files into matching project paths.
++2. In `frontend`, optionally copy `.env.example` to `.env`.
++3. Run `npm install` and `npm start`.
++4. Open `http://localhost:3000/admin` and use the existing administrator login. No signup flow is present.
++5. Upload images (JPEG/PNG/WebP/GIF, maximum 5 MB), paste the copied URL into the relevant field, then validate and publish.
++
++The public site reads the published `site` document and falls back to bundled config/assets on any Supabase failure. `textOverrides` maps exact visible text to replacement text. `imageOverrides` maps an original path (for example `/assets/brand-title.png`) to an uploaded public URL.
++
++For deployment, configure an SPA rewrite so `/admin` and every other non-file route serves `/index.html` (for example Netlify: `/* /index.html 200`; Vercel: rewrite `/(.*)` to `/index.html`). Never place a service-role or secret key in frontend variables.
+diff --git a/frontend/.env.example b/frontend/.env.example
+new file mode 100644
+index 0000000..1b12ead
+--- /dev/null
++++ b/frontend/.env.example
+@@ -0,0 +1,2 @@
++REACT_APP_SUPABASE_URL=https://lyclaplowwxocbuuigyu.supabase.co
++REACT_APP_SUPABASE_PUBLISHABLE_KEY=sb_publishable_NSfTkSfWYK03EAlM6Vo4Ug_1cCyf57W
+diff --git a/frontend/package-lock.json b/frontend/package-lock.json
+index 0162ec4..eb0dddd 100644
+--- a/frontend/package-lock.json
++++ b/frontend/package-lock.json
+@@ -36,6 +36,7 @@
+         "@radix-ui/react-toggle": "1.1.6",
+         "@radix-ui/react-toggle-group": "1.1.7",
+         "@radix-ui/react-tooltip": "1.2.4",
++        "@supabase/supabase-js": "^2.57.4",
+         "@tanstack/react-query": "5.56.2",
+         "axios": "1.18.0",
+         "class-variance-authority": "0.7.1",
+@@ -4949,6 +4950,98 @@
+       "integrity": "sha512-e7Mew686owMaPJVNNLs55PUvgz371nKgwsc4vxE49zsODpJEnxgxRo2y/OKrqueavXgZNMDVj3DdHFlaSAeU8g==",
+       "license": "MIT"
+     },
++    "node_modules/@supabase/auth-js": {
++      "version": "2.112.3",
++      "resolved": "https://registry.npmjs.org/@supabase/auth-js/-/auth-js-2.112.3.tgz",
++      "integrity": "sha512-NA0rsgAlWZPvbhw8aUdmgfpHVgUAcd8zK5ov43l++o1bLIPXZhRiAlRobhwF5AatQuovpqxsMH50F4oyyV4XZw==",
++      "license": "MIT",
++      "dependencies": {
++        "tslib": "2.8.1"
++      },
++      "engines": {
++        "node": ">=22.0.0"
++      }
++    },
++    "node_modules/@supabase/functions-js": {
++      "version": "2.112.3",
++      "resolved": "https://registry.npmjs.org/@supabase/functions-js/-/functions-js-2.112.3.tgz",
++      "integrity": "sha512-gfv481mTOVWtZIJgXupxZpni2V2UWPf6jeF/jOK7HdMHdH+mt6sU0sHHwf0POsPip8ltlulu9OUHgwVzl5ddRw==",
++      "license": "MIT",
++      "dependencies": {
++        "tslib": "2.8.1"
++      },
++      "engines": {
++        "node": ">=22.0.0"
++      }
++    },
++    "node_modules/@supabase/phoenix": {
++      "version": "0.4.5",
++      "resolved": "https://registry.npmjs.org/@supabase/phoenix/-/phoenix-0.4.5.tgz",
++      "integrity": "sha512-aAn9H9ovVyeApKy11OWOrrOGq8DV68yWeH4ud2lN9fzn4aO8Zb5GLL9m1pUg9nLqIcT+ZDfAcsZe0E/nqdv2lw==",
++      "license": "MIT"
++    },
++    "node_modules/@supabase/postgrest-js": {
++      "version": "2.112.3",
++      "resolved": "https://registry.npmjs.org/@supabase/postgrest-js/-/postgrest-js-2.112.3.tgz",
++      "integrity": "sha512-+Mf6uCpzr00bqxwX8hTK2X2L9eAL/1vuOjdEjx6upz9ulb0RmQT16XeU/JkMUlVHw/B46ZnPa2busY4Kd9YCzw==",
++      "license": "MIT",
++      "dependencies": {
++        "tslib": "2.8.1"
++      },
++      "engines": {
++        "node": ">=22.0.0"
++      }
++    },
++    "node_modules/@supabase/realtime-js": {
++      "version": "2.112.3",
++      "resolved": "https://registry.npmjs.org/@supabase/realtime-js/-/realtime-js-2.112.3.tgz",
++      "integrity": "sha512-E6wljXWs7DUOloyIB69i3YFInWE6IyCvgTAbQ0KYxOHv26FdA1KzEXTuzxrYEdf70t406Z9BRwUlGyclGF2FXA==",
++      "license": "MIT",
++      "dependencies": {
++        "@supabase/phoenix": "0.4.5",
++        "tslib": "2.8.1"
++      },
++      "engines": {
++        "node": ">=22.0.0"
++      }
++    },
++    "node_modules/@supabase/storage-js": {
++      "version": "2.112.3",
++      "resolved": "https://registry.npmjs.org/@supabase/storage-js/-/storage-js-2.112.3.tgz",
++      "integrity": "sha512-oSK61tzlUvg+BWPqpKQCu9qqonsO26btaoAR9D6Gest2aj7xUqToj9rKyaoYOJczkhg9BjqA1REbYy9tPI4bDA==",
++      "license": "MIT",
++      "dependencies": {
++        "iceberg-js": "^0.8.1",
++        "tslib": "2.8.1"
++      },
++      "engines": {
++        "node": ">=22.0.0"
++      }
++    },
++    "node_modules/@supabase/supabase-js": {
++      "version": "2.112.3",
++      "resolved": "https://registry.npmjs.org/@supabase/supabase-js/-/supabase-js-2.112.3.tgz",
++      "integrity": "sha512-Jv1bxVQmEJNkjvPEhFaKjPzsh+Ozyew6lWGD+SoYcsclDEP1z7yEvKvfUQfzy0DkxRIQnZNxmmWtAzw5XLTQoA==",
++      "license": "MIT",
++      "dependencies": {
++        "@supabase/auth-js": "2.112.3",
++        "@supabase/functions-js": "2.112.3",
++        "@supabase/postgrest-js": "2.112.3",
++        "@supabase/realtime-js": "2.112.3",
++        "@supabase/storage-js": "2.112.3"
++      },
++      "engines": {
++        "node": ">=22.0.0"
++      },
++      "peerDependencies": {
++        "@opentelemetry/api": ">=1.0.0"
++      },
++      "peerDependenciesMeta": {
++        "@opentelemetry/api": {
++          "optional": true
++        }
++      }
++    },
+     "node_modules/@surma/rollup-plugin-off-main-thread": {
+       "version": "2.2.3",
+       "resolved": "https://registry.npmjs.org/@surma/rollup-plugin-off-main-thread/-/rollup-plugin-off-main-thread-2.2.3.tgz",
+@@ -11290,6 +11383,15 @@
+         "node": ">=10.17.0"
+       }
+     },
++    "node_modules/iceberg-js": {
++      "version": "0.8.1",
++      "resolved": "https://registry.npmjs.org/iceberg-js/-/iceberg-js-0.8.1.tgz",
++      "integrity": "sha512-1dhVQZXhcHje7798IVM+xoo/1ZdVfzOMIc8/rgVSijRK38EDqOJoGula9N/8ZI5RD8QTxNQtK/Gozpr+qUqRRA==",
++      "license": "MIT",
++      "engines": {
++        "node": ">=20.0.0"
++      }
++    },
+     "node_modules/iconv-lite": {
+       "version": "0.6.3",
+       "resolved": "https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.6.3.tgz",
+diff --git a/frontend/package.json b/frontend/package.json
+index dcfd078..e60fe86 100644
+--- a/frontend/package.json
++++ b/frontend/package.json
+@@ -3,6 +3,7 @@
+   "version": "0.1.0",
+   "private": true,
+   "dependencies": {
++    "@supabase/supabase-js": "^2.57.4",
+     "@hookform/resolvers": "5.0.1",
+     "@radix-ui/react-accordion": "1.2.8",
+     "@radix-ui/react-alert-dialog": "1.1.11",
+diff --git a/frontend/src/admin/AdminPage.jsx b/frontend/src/admin/AdminPage.jsx
+new file mode 100644
+index 0000000..3b1ecab
+--- /dev/null
++++ b/frontend/src/admin/AdminPage.jsx
+@@ -0,0 +1,6 @@
++import { useEffect,useState } from "react";
++import { ADMIN_UID,supabase } from "../lib/supabase";
++import { defaultContent,mergeContent } from "../cms/defaultContent";
++import "./admin.css";
++const TYPES=["image/jpeg","image/png","image/webp","image/gif"],MAX=5*1024*1024;
++export function AdminPage(){const[session,setSession]=useState(null),[loading,setLoading]=useState(true),[email,setEmail]=useState(""),[password,setPassword]=useState(""),[saved,setSaved]=useState(defaultContent),[json,setJson]=useState(JSON.stringify(defaultContent,null,2)),[message,setMessage]=useState(""),[busy,setBusy]=useState(false);useEffect(()=>{supabase.auth.getSession().then(({data})=>{setSession(data.session);setLoading(false)});const{data}=supabase.auth.onAuthStateChange((_e,s)=>setSession(s));return()=>data.subscription.unsubscribe()},[]);useEffect(()=>{if(session?.user?.id===ADMIN_UID)supabase.from("cms_documents").select("content").eq("id","site").maybeSingle().then(({data})=>{const n=mergeContent(defaultContent,data?.content);setSaved(n);setJson(JSON.stringify(n,null,2))})},[session]);const login=async e=>{e.preventDefault();setBusy(true);setMessage("");const{data,error}=await supabase.auth.signInWithPassword({email:email.trim(),password});if(!error&&data.user?.id!==ADMIN_UID){await supabase.auth.signOut();setMessage("This account is not authorised to administer the site.")}else setMessage(error?.message||"Signed in successfully.");setBusy(false)};const save=async()=>{setBusy(true);setMessage("");try{const next=JSON.parse(json);const{error}=await supabase.from("cms_documents").upsert({id:"site",content:next,is_published:true,updated_at:new Date().toISOString(),updated_by:session.user.id});if(error)throw error;setSaved(next);setMessage("Published successfully.")}catch(e){setMessage(e.message)}setBusy(false)};const upload=async e=>{const f=e.target.files?.[0];if(!f)return;if(!TYPES.includes(f.type)||f.size>MAX){setMessage("Choose a JPEG, PNG, WebP or GIF no larger than 5 MB.");return}setBusy(true);const path=`uploads/${Date.now()}-${f.name.replace(/[^a-zA-Z0-9._-]/g,"-")}`;const{error}=await supabase.storage.from("cms-images").upload(path,f,{contentType:f.type,upsert:false});if(error)setMessage(error.message);else{const{data}=supabase.storage.from("cms-images").getPublicUrl(path);await navigator.clipboard?.writeText(data.publicUrl);setMessage(`Uploaded. URL copied: ${data.publicUrl}`)}setBusy(false);e.target.value=""};if(loading)return <main className="admin-shell"><p>Checking session…</p></main>;if(!session)return <main className="admin-shell" data-cms-ignore><form className="admin-card" onSubmit={login}><h1>Website administration</h1><p>Sign in with the approved administrator account.</p><label>Email<input type="email" value={email} onChange={e=>setEmail(e.target.value)} required autoComplete="username"/></label><label>Password<input type="password" value={password} onChange={e=>setPassword(e.target.value)} required autoComplete="current-password"/></label><button disabled={busy}>{busy?"Signing in…":"Sign in"}</button>{message&&<p role="alert">{message}</p>}</form></main>;if(session.user.id!==ADMIN_UID)return <main className="admin-shell"><p>Unauthorised.</p><button onClick={()=>supabase.auth.signOut()}>Sign out</button></main>;return <main className="admin-shell" data-cms-ignore><header className="admin-toolbar"><div><h1>NZ Sings Bollywood CMS</h1><p>Manage all site content; bundled content remains the fallback.</p></div><button className="secondary" onClick={()=>supabase.auth.signOut()}>Log out</button></header><section className="admin-card"><h2>Image library</h2><p>Upload, then paste the copied URL into an image field or imageOverrides. Unique names make replacement safe.</p><input type="file" accept={TYPES.join(",")} onChange={upload} disabled={busy}/></section><section className="admin-card"><h2>Published content</h2><p>Edit site/event text, tickets, navigation, social links, organisers, partners, supporters, team, FAQs, news and footer data. textOverrides maps exact visible fallback text to replacements; imageOverrides maps original paths to uploaded URLs.</p><textarea aria-label="CMS content JSON" value={json} onChange={e=>setJson(e.target.value)} spellCheck="false"/><div className="admin-actions"><button onClick={save} disabled={busy}>{busy?"Saving…":"Validate and publish"}</button><button className="secondary" onClick={()=>setJson(JSON.stringify(saved,null,2))}>Discard edits</button></div>{message&&<p role="status" className="admin-message">{message}</p>}</section></main>}
+diff --git a/frontend/src/admin/admin.css b/frontend/src/admin/admin.css
+new file mode 100644
+index 0000000..a1d3ebc
+--- /dev/null
++++ b/frontend/src/admin/admin.css
+@@ -0,0 +1 @@
++.admin-shell{min-height:100vh;background:#0a0907;color:#f5f5f4;padding:32px;font-family:Manrope,Arial,sans-serif}.admin-shell *{box-sizing:border-box}.admin-shell h1,.admin-shell h2{margin:0 0 10px}.admin-toolbar{max-width:1100px;margin:0 auto 22px;display:flex;justify-content:space-between;gap:20px}.admin-card{max-width:1100px;margin:0 auto 20px;padding:24px;border:1px solid #d4af3745;background:#15120d;border-radius:14px}.admin-card label{display:block;margin:16px 0}.admin-card input,.admin-card textarea{display:block;width:100%;margin-top:6px;background:#050505;color:#fff;border:1px solid #666;border-radius:8px;padding:12px}.admin-card textarea{min-height:60vh;font:13px/1.5 Consolas,monospace}.admin-shell button{border:0;border-radius:999px;background:#d4af37;color:#080706;padding:12px 20px;font-weight:800;cursor:pointer}.admin-shell button:disabled{opacity:.55}.admin-shell .secondary{background:transparent;color:#d4af37;border:1px solid #d4af37}.admin-actions{display:flex;gap:12px;margin-top:16px}.admin-message{padding:12px;background:#ffffff0b;border-radius:8px;overflow-wrap:anywhere}@media(max-width:640px){.admin-shell{padding:18px}.admin-toolbar{display:block}.admin-toolbar>button{margin-top:12px}}
+diff --git a/frontend/src/cms/CmsProvider.jsx b/frontend/src/cms/CmsProvider.jsx
+new file mode 100644
+index 0000000..2ff9d75
+--- /dev/null
++++ b/frontend/src/cms/CmsProvider.jsx
+@@ -0,0 +1,9 @@
++import { createContext,useContext,useEffect,useState } from "react";
++import { supabase } from "../lib/supabase";
++import { defaultContent,mergeContent } from "./defaultContent";
++const CmsContext=createContext({content:defaultContent,loading:true,source:"fallback"});
++export const useCms=()=>useContext(CmsContext);
++const norm=(v)=>v.replace(/\s+/g," ").trim();
++function derived(content){const text={...(content.textOverrides||{})},images={...(content.imageOverrides||{})},links={};const walk=(a,b)=>{if(typeof a==="string"&&typeof b==="string"&&a!==b){if(a.startsWith("/assets/"))images[a]=b;else if(/^(https?:|mailto:|#)/.test(a))links[a]=b;else text[norm(a)]=b}else if(a&&b&&typeof a==="object"&&typeof b==="object")Object.keys(a).forEach(k=>walk(a[k],b[k]))};walk(defaultContent,content);return{text,images,links}}
++function applyOverrides(content){const maps=derived(content);const apply=()=>{document.querySelectorAll("img[src]").forEach(img=>{const original=img.dataset.cmsOriginalSrc||img.getAttribute("src");img.dataset.cmsOriginalSrc=original;if(maps.images[original])img.src=maps.images[original]});document.querySelectorAll("a[href]").forEach(a=>{const original=a.dataset.cmsOriginalHref||a.getAttribute("href");a.dataset.cmsOriginalHref=original;if(maps.links[original])a.href=maps.links[original]});const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;while((n=w.nextNode())){if(n.parentElement?.closest("[data-cms-ignore],script,style"))continue;const key=n.parentElement?.dataset.cmsOriginalText||norm(n.nodeValue||"");if(!key)continue;n.parentElement.dataset.cmsOriginalText=key;if(Object.prototype.hasOwnProperty.call(maps.text,key))n.nodeValue=n.nodeValue.replace(n.nodeValue.trim(),maps.text[key])}};apply();const o=new MutationObserver(apply);o.observe(document.body,{childList:true,subtree:true});return()=>o.disconnect()}
++export function CmsProvider({children}){const[state,setState]=useState({content:defaultContent,loading:true,source:"fallback"});useEffect(()=>{let active=true;supabase.from("cms_documents").select("content").eq("id","site").eq("is_published",true).maybeSingle().then(({data,error})=>active&&setState({content:mergeContent(defaultContent,data?.content),loading:false,source:error||!data?"fallback":"supabase"})).catch(()=>active&&setState({content:defaultContent,loading:false,source:"fallback"}));return()=>{active=false}},[]);useEffect(()=>applyOverrides(state.content),[state.content]);return <CmsContext.Provider value={state}>{children}</CmsContext.Provider>}
+diff --git a/frontend/src/cms/defaultContent.js b/frontend/src/cms/defaultContent.js
+new file mode 100644
+index 0000000..0f9256a
+--- /dev/null
++++ b/frontend/src/cms/defaultContent.js
+@@ -0,0 +1,3 @@
++import { siteConfig, eventConfig, navigationConfig, footerNavConfig, socialConfig, organisersConfig, partnersConfig, supportersConfig, charityConfig, teamConfig, faqConfig, newsConfig, TICKET_URL, CONTACT_EMAIL } from "../config";
++export const defaultContent = { site:siteConfig,event:eventConfig,ticketUrl:TICKET_URL,contactEmail:CONTACT_EMAIL,navigation:navigationConfig,footerNavigation:footerNavConfig,social:socialConfig,organisers:organisersConfig,partners:partnersConfig,supporters:supportersConfig,charity:charityConfig,team:teamConfig,faq:faqConfig,news:newsConfig,textOverrides:{},imageOverrides:{} };
++export const mergeContent=(fallback,remote)=>({...fallback,...(remote||{})});
+diff --git a/frontend/src/index.js b/frontend/src/index.js
+index 6a76e5b..2294aeb 100644
+--- a/frontend/src/index.js
++++ b/frontend/src/index.js
+@@ -3,6 +3,8 @@ import ReactDOM from "react-dom/client";
+ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+ import "@/index.css";
+ import App from "@/App";
++import { AdminPage } from "@/admin/AdminPage";
++import { CmsProvider } from "@/cms/CmsProvider";
+ 
+ const queryClient = new QueryClient({
+   defaultOptions: {
+@@ -17,7 +19,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
+ root.render(
+   <React.StrictMode>
+     <QueryClientProvider client={queryClient}>
+-      <App />
++      {window.location.pathname.replace(/\/$/, "") === "/admin" ? <AdminPage /> : <CmsProvider><App /></CmsProvider>}
+     </QueryClientProvider>
+   </React.StrictMode>,
+ );
+diff --git a/frontend/src/lib/supabase.js b/frontend/src/lib/supabase.js
+new file mode 100644
+index 0000000..320fb58
+--- /dev/null
++++ b/frontend/src/lib/supabase.js
+@@ -0,0 +1,3 @@
++import { createClient } from "@supabase/supabase-js";
++export const ADMIN_UID = "b0bc13c2-bee0-4bec-a4a3-7a5d84ba60ab";
++export const supabase = createClient(process.env.REACT_APP_SUPABASE_URL || "https://lyclaplowwxocbuuigyu.supabase.co", process.env.REACT_APP_SUPABASE_PUBLISHABLE_KEY || "sb_publishable_NSfTkSfWYK03EAlM6Vo4Ug_1cCyf57W", { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } });
+diff --git a/supabase/migrations/20260818000000_create_secure_cms.sql b/supabase/migrations/20260818000000_create_secure_cms.sql
+new file mode 100644
+index 0000000..69a2dcc
+--- /dev/null
++++ b/supabase/migrations/20260818000000_create_secure_cms.sql
+@@ -0,0 +1,14 @@
++-- Applied to project lyclaplowwxocbuuigyu. Keep this file for reproducible environments.
++create table if not exists public.cms_documents (id text primary key, content jsonb not null default '{}'::jsonb, is_published boolean not null default false, updated_at timestamptz not null default now(), updated_by uuid);
++alter table public.cms_documents enable row level security;
++revoke all on public.cms_documents from anon, authenticated;
++grant select on public.cms_documents to anon, authenticated;
++grant insert, update, delete on public.cms_documents to authenticated;
++create policy "Public reads published CMS" on public.cms_documents for select to anon, authenticated using (is_published or (select auth.uid())='b0bc13c2-bee0-4bec-a4a3-7a5d84ba60ab'::uuid);
++create policy "Approved administrator inserts CMS" on public.cms_documents for insert to authenticated with check ((select auth.uid())='b0bc13c2-bee0-4bec-a4a3-7a5d84ba60ab'::uuid and updated_by=(select auth.uid()));
++create policy "Approved administrator updates CMS" on public.cms_documents for update to authenticated using ((select auth.uid())='b0bc13c2-bee0-4bec-a4a3-7a5d84ba60ab'::uuid) with check ((select auth.uid())='b0bc13c2-bee0-4bec-a4a3-7a5d84ba60ab'::uuid and updated_by=(select auth.uid()));
++create policy "Approved administrator deletes CMS" on public.cms_documents for delete to authenticated using ((select auth.uid())='b0bc13c2-bee0-4bec-a4a3-7a5d84ba60ab'::uuid);
++insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types) values('cms-images','cms-images',true,5242880,array['image/jpeg','image/png','image/webp','image/gif']) on conflict(id) do update set public=excluded.public,file_size_limit=excluded.file_size_limit,allowed_mime_types=excluded.allowed_mime_types;
++create policy "Approved administrator inserts CMS images" on storage.objects for insert to authenticated with check(bucket_id='cms-images' and (select auth.uid())='b0bc13c2-bee0-4bec-a4a3-7a5d84ba60ab'::uuid);
++create policy "Approved administrator updates CMS images" on storage.objects for update to authenticated using(bucket_id='cms-images' and (select auth.uid())='b0bc13c2-bee0-4bec-a4a3-7a5d84ba60ab'::uuid) with check(bucket_id='cms-images' and (select auth.uid())='b0bc13c2-bee0-4bec-a4a3-7a5d84ba60ab'::uuid);
++create policy "Approved administrator deletes CMS images" on storage.objects for delete to authenticated using(bucket_id='cms-images' and (select auth.uid())='b0bc13c2-bee0-4bec-a4a3-7a5d84ba60ab'::uuid);

@@ -14,7 +14,7 @@ const TeamCard = ({ member, index }) => (
                         src={member.photo}
                         alt={`Portrait of ${member.name}`}
                         loading="lazy"
-                        className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.025]"
+                        className="h-full w-full object-contain object-center transition-transform duration-700 group-hover:scale-[1.025]"
                     />
                 </div>
             ) : (

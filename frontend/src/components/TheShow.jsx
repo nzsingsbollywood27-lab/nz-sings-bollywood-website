@@ -18,7 +18,7 @@ export const TheShow = () => (
                                 alt="NZ Sings Bollywood – 90s with 90 portrait poster showing choir and live symphony orchestra"
                                 data-testid="the-show-image"
                                 loading="lazy"
-                                className="aspect-[4/5] w-full object-cover object-top transition-transform duration-700 hover:scale-[1.03] sm:aspect-[3/3.4]"
+                                className="aspect-[4/5] w-full bg-black object-contain object-center transition-transform duration-700 hover:scale-[1.03] sm:aspect-[3/3.4]"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20" aria-hidden="true" />
                             <p className="font-accent absolute bottom-5 left-5 right-5 text-lg italic leading-snug text-[#f3e5ab]">
