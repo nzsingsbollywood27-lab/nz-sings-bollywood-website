@@ -6,15 +6,6 @@ const CmsContext = createContext({ content: defaultContent, loading: true, sourc
 export const useCms = () => useContext(CmsContext);
 
 const norm = (value) => String(value || "").replace(/\s+/g, " ").trim();
-const isRealLink = (value) => typeof value === "string" && value.trim() && value.trim() !== "#";
-
-export const getCmsPath = (root, path, fallback = undefined) => {
-    const value = String(path || "")
-        .split(".")
-        .filter(Boolean)
-        .reduce((result, key) => result?.[key], root);
-    return value ?? fallback;
-};
 
 function derived(content) {
     const text = { ...(content.textOverrides || {}) };
@@ -24,8 +15,8 @@ function derived(content) {
     const walk = (fallbackValue, remoteValue) => {
         if (typeof fallbackValue === "string" && typeof remoteValue === "string" && fallbackValue !== remoteValue) {
             if (fallbackValue.startsWith("/assets/")) images[fallbackValue] = remoteValue;
-            else if (/^(https?:|mailto:)/.test(fallbackValue) && isRealLink(remoteValue)) links[fallbackValue] = remoteValue;
-            else if (fallbackValue !== "#") text[norm(fallbackValue)] = remoteValue;
+            else if (/^(https?:|mailto:)/.test(fallbackValue)) links[fallbackValue] = remoteValue;
+            else text[norm(fallbackValue)] = remoteValue;
             return;
         }
 
@@ -42,13 +33,6 @@ function applyOverrides(content) {
     const maps = derived(content);
 
     const apply = () => {
-        document.querySelectorAll("[data-cms-img-key]").forEach((element) => {
-            const next = getCmsPath(content, element.dataset.cmsImgKey);
-            if (!next) return;
-            if (element.tagName.toLowerCase() === "source") element.setAttribute("srcset", next);
-            else element.setAttribute("src", next);
-        });
-
         document.querySelectorAll("img[src]").forEach((img) => {
             const original = img.dataset.cmsOriginalSrc || img.getAttribute("src");
             img.dataset.cmsOriginalSrc = original;
@@ -61,17 +45,7 @@ function applyOverrides(content) {
             if (maps.images[original]) source.setAttribute("srcset", maps.images[original]);
         });
 
-        document.querySelectorAll("[data-cms-link-key]").forEach((anchor) => {
-            const next = getCmsPath(content, anchor.dataset.cmsLinkKey);
-            if (isRealLink(next)) anchor.setAttribute("href", next);
-            if (next && next !== "#") {
-                anchor.setAttribute("target", "_blank");
-                anchor.setAttribute("rel", "noreferrer");
-            }
-        });
-
         document.querySelectorAll("a[href]").forEach((anchor) => {
-            if (anchor.dataset.cmsLinkKey) return;
             const original = anchor.dataset.cmsOriginalHref || anchor.getAttribute("href");
             anchor.dataset.cmsOriginalHref = original;
             if (maps.links[original]) anchor.setAttribute("href", maps.links[original]);

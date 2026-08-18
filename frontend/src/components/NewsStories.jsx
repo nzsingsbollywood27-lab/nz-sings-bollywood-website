@@ -9,15 +9,13 @@ const isActiveLink = (href) => href && href !== "#";
 export const NewsStories = () => {
     const { content } = useCms();
     const social = content.social || socialConfig;
-    const section = content.sections?.news || {};
-
     const socialItems = [
         {
             key: "instagram",
             label: "Instagram",
             href: social.instagram,
             Icon: Instagram,
-            description: section.instagramDescription || "Follow rehearsal moments, performer updates and event highlights.",
+            description: "Follow rehearsal moments, performer updates and event highlights.",
             testId: "news-instagram-link",
         },
         {
@@ -25,7 +23,7 @@ export const NewsStories = () => {
             label: "Facebook",
             href: social.facebook,
             Icon: Facebook,
-            description: section.facebookDescription || "Follow event announcements, community updates and official posts.",
+            description: "Follow event announcements, community updates and official posts.",
             testId: "news-facebook-link",
         },
     ];
@@ -33,7 +31,7 @@ export const NewsStories = () => {
     return (
         <section id="news" data-testid="news-section" className="relative border-t border-[#d4af37]/10 bg-[#080706] py-24 md:py-32">
             <div className="mx-auto max-w-7xl px-5 md:px-8">
-                <ChapterHeading number="06" overline={section.overline || "Social Media"} title={<>Follow <span className="gold-text italic">the Journey</span></>} />
+                <ChapterHeading number="06" overline="Social Media" title={<>Follow <span className="gold-text italic">the Journey</span></>} />
 
                 <Reveal delay={0.12}>
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
@@ -58,23 +56,11 @@ export const NewsStories = () => {
                             );
 
                             return active ? (
-                                <a
-                                    key={key}
-                                    href={href}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    data-cms-link-key={`social.${key}`}
-                                    data-testid={testId}
-                                    className="group rounded-2xl border border-white/10 bg-white/[0.03] p-7 transition-[border-color,transform,background-color] duration-300 hover:-translate-y-1 hover:border-[#d4af37]/45 hover:bg-[#d4af37]/[0.04]"
-                                >
+                                <a key={key} href={href} target="_blank" rel="noreferrer" data-testid={testId} className="group rounded-2xl border border-white/10 bg-white/[0.03] p-7 transition-[border-color,transform,background-color] duration-300 hover:-translate-y-1 hover:border-[#d4af37]/45 hover:bg-[#d4af37]/[0.04]">
                                     {contentBlock}
                                 </a>
                             ) : (
-                                <div
-                                    key={key}
-                                    data-testid={testId}
-                                    className="rounded-2xl border border-white/10 bg-white/[0.02] p-7 opacity-80"
-                                >
+                                <div key={key} data-testid={testId} className="rounded-2xl border border-white/10 bg-white/[0.02] p-7 opacity-80">
                                     {contentBlock}
                                 </div>
                             );

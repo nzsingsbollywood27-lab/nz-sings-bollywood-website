@@ -7,24 +7,27 @@ import { CountdownTimer } from "./CountdownTimer";
 import { TicketButton } from "./TicketButton";
 import { MaskedLine } from "./Reveal";
 
+const makeHighlights = (charityName) => [
+    { icon: Globe2, text: "The world's first multi-ethnic Bollywood choir concert" },
+    { icon: Mic, text: "90 performers live on stage" },
+    { icon: Music, text: "Live symphony orchestra" },
+    { icon: Guitar, text: "Contemporary live band" },
+    { icon: Sparkles, text: "90s Bollywood hits presented like never before" },
+    { icon: Handshake, text: "Celebrating 75 years of India–New Zealand friendship" },
+    { icon: Heart, text: `Proudly supporting ${charityName}` },
+];
+
 export const Hero = () => {
     const { content } = useCms();
     const site = content.site || siteConfig;
     const event = content.event || eventConfig;
     const charity = content.charity || charityConfig;
-    const highlights = [
-        { icon: Globe2, text: "The world's first multi-ethnic Bollywood choir concert" },
-        { icon: Mic, text: "90 performers live on stage" },
-        { icon: Music, text: "Live symphony orchestra" },
-        { icon: Guitar, text: "Contemporary live band" },
-        { icon: Sparkles, text: "90s Bollywood hits presented like never before" },
-        { icon: Handshake, text: "Celebrating 75 years of India–New Zealand friendship" },
-        { icon: Heart, text: `Proudly supporting ${charity.name}` },
-    ];
+    const eventImages = site.eventImages || siteConfig.eventImages;
     const ref = useRef(null);
     const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
     const numY = useTransform(scrollYProgress, [0, 1], ["0%", "38%"]);
 
+    const highlights = makeHighlights(charity.name || charityConfig.name);
     const particles = useMemo(
         () =>
             Array.from({ length: 18 }, (_, i) => ({
@@ -64,10 +67,9 @@ export const Hero = () => {
                     transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
                 >
                     <picture>
-                        <source data-cms-img-key="site.eventImages.portraitPoster" media="(max-width: 640px)" srcSet={site.eventImages?.portraitPoster || "/assets/NZ Sings Bollywood - Potrait Size Poster.png"} />
+                        <source media="(max-width: 640px)" srcSet={eventImages.portraitPoster || siteConfig.eventImages.portraitPoster} />
                         <img
-                            data-cms-img-key="site.eventImages.squarePoster"
-                            src={site.eventImages?.squarePoster || "/assets/NZ Sings Bollywood - Square Poster.png"}
+                            src={eventImages.squarePoster || siteConfig.eventImages.squarePoster}
                             alt="NZ Sings Bollywood – 90s with 90 event poster"
                             className="h-auto w-full rounded-xl object-contain"
                             loading="eager"
@@ -102,45 +104,21 @@ export const Hero = () => {
                     One night. One stage. One historic event.
                 </motion.p>
 
-                <motion.div
-                    initial={{ opacity: 0, y: 24 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.35, duration: 0.9 }}
-                    className="mt-10"
-                >
+                <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.35, duration: 0.9 }} className="mt-10">
                     <CountdownTimer />
                 </motion.div>
 
-                <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 1.5, duration: 0.9 }}
-                    className="mt-9 text-[11px] font-bold uppercase tracking-[0.3em] text-zinc-400 sm:text-xs"
-                >
+                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5, duration: 0.9 }} className="mt-9 text-[11px] font-bold uppercase tracking-[0.3em] text-zinc-400 sm:text-xs">
                     {event.detailsLine}
                 </motion.p>
 
-                <motion.div
-                    initial={{ opacity: 0, y: 24 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.6, duration: 0.9 }}
-                    className="mt-7"
-                >
+                <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.6, duration: 0.9 }} className="mt-7">
                     <TicketButton size="lg" testId="hero-buy-tickets-btn" showNote />
                 </motion.div>
 
-                <motion.ul
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 1.85, duration: 1 }}
-                    className="mt-14 grid w-full max-w-4xl grid-cols-1 gap-4 text-left sm:grid-cols-2 lg:grid-cols-3"
-                >
+                <motion.ul initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.85, duration: 1 }} className="mt-14 grid w-full max-w-4xl grid-cols-1 gap-4 text-left sm:grid-cols-2 lg:grid-cols-3">
                     {highlights.map(({ icon: Icon, text }, i) => (
-                        <li
-                            key={i}
-                            data-testid={`hero-highlight-${i}`}
-                            className="flex items-center gap-3.5 rounded-xl border border-[#d4af37]/18 bg-white/[0.035] px-5 py-4 backdrop-blur-sm transition-colors duration-300 hover:border-[#d4af37]/40"
-                        >
+                        <li key={i} data-testid={`hero-highlight-${i}`} className="flex items-center gap-3.5 rounded-xl border border-[#d4af37]/18 bg-white/[0.035] px-5 py-4 backdrop-blur-sm transition-colors duration-300 hover:border-[#d4af37]/40">
                             <Icon className="h-5 w-5 shrink-0 text-[#d4af37]" aria-hidden="true" />
                             <span className="text-sm font-medium leading-snug text-zinc-200 sm:text-[15px]">{text}</span>
                         </li>
@@ -148,15 +126,7 @@ export const Hero = () => {
                 </motion.ul>
             </motion.div>
 
-            <motion.a
-                href="#initiative"
-                data-testid="hero-scroll-indicator"
-                aria-label="Scroll down"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 2.2, duration: 1 }}
-                className="relative z-10 mx-auto mb-8 text-[#d4af37]/60 transition-colors hover:text-[#d4af37]"
-            >
+            <motion.a href="#initiative" data-testid="hero-scroll-indicator" aria-label="Scroll down" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.2, duration: 1 }} className="relative z-10 mx-auto mb-8 text-[#d4af37]/60 transition-colors hover:text-[#d4af37]">
                 <ChevronDown className="h-6 w-6 animate-bounce" />
             </motion.a>
         </section>
