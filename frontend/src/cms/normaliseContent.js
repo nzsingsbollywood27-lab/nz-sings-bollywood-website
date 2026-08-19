@@ -4,13 +4,6 @@ const keyOf = (value) => String(value || "").toLowerCase().replace(/[^a-z0-9]+/g
 
 const findByName = (items, name) => items.find((item) => keyOf(item?.name) === keyOf(name));
 
-const CATEGORY_ALIASES = {
-    "powered by partner": "powered by partners",
-    "powered by partners": "powered by partners",
-};
-
-const categoryKey = (category) => CATEGORY_ALIASES[keyOf(category)] || keyOf(category);
-
 const flattenPartnerItems = (groups = []) =>
     (Array.isArray(groups) ? groups : []).flatMap((group) =>
         (Array.isArray(group?.partners) ? group.partners : []).map((partner) => ({
@@ -19,17 +12,6 @@ const flattenPartnerItems = (groups = []) =>
         })),
     );
 
-const findRemotePartner = (remoteItems, canonicalGroup, canonicalPartner) => {
-    const groupKey = categoryKey(canonicalGroup.category);
-    const sameName = findByName(remoteItems, canonicalPartner.name);
-    if (sameName) return sameName;
-
-    // Prevent logo/category drift caused by edited arrays in the CMS. Only use index fallback
-    // when the saved partner is still in the same canonical category.
-    const groupedItems = remoteItems.filter((item) => categoryKey(item.category) === groupKey);
-    return groupedItems.find((item) => keyOf(item.name) === keyOf(canonicalPartner.name));
-};
-
 const normalisePartners = (remotePartners) => {
     const remoteItems = flattenPartnerItems(remotePartners);
 
@@ -37,12 +19,10 @@ const normalisePartners = (remotePartners) => {
         ...canonicalGroup,
         category: canonicalGroup.category,
         partners: canonicalGroup.partners.map((canonicalPartner) => {
-            const remote = findRemotePartner(remoteItems, canonicalGroup, canonicalPartner);
+            const remote = findByName(remoteItems, canonicalPartner.name);
             return {
                 ...canonicalPartner,
                 ...(remote || {}),
-                // Lock the identity/category to the production structure so admin containers
-                // and public containers cannot become offset from each other.
                 name: canonicalPartner.name,
                 category: undefined,
             };
@@ -64,9 +44,8 @@ const normaliseTeam = (remoteTeam) => {
             ...canonicalMember,
             ...(remote || {}),
             name: canonicalMember.name,
-            role: requestedRoles[memberKey] || canonicalMember.role,
-            // Keep approved production portraits unless the source files are deliberately changed in code.
-            // This prevents accidental CMS crop/resize variants from making organiser photos uneven.
+            role: requestedRoles[memberKey] || remote?.role || canonicalMember.role,
+            // Keep organiser portraits locked to the approved production images so CMS uploads/cached values cannot crop or distort them.
             photo: canonicalMember.photo,
         };
     });
@@ -86,10 +65,9 @@ const normaliseHeroImages = (remoteSite) => {
         ...(site.eventImages || {}),
     };
 
-    // Mobile must stay on the square poster for first impact.
-    eventImages.mobilePoster = siteConfig.eventImages?.squarePoster || eventImages.squarePoster;
-    eventImages.squarePoster = eventImages.squarePoster || siteConfig.eventImages?.squarePoster;
-    eventImages.portraitPoster = eventImages.portraitPoster || siteConfig.eventImages?.portraitPoster;
+    // Mobile should use the square poster for first impact, as requested.
+    eventImages.mobilePoster = eventImages.squarePoster || siteConfig.eventImages?.squarePoster;
+    eventImages.portraitPoster = eventImages.portraitPoster || eventImages.squarePoster || siteConfig.eventImages?.portraitPoster;
 
     return {
         ...site,
