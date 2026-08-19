@@ -4,37 +4,29 @@ import { useCms } from "../cms/CmsProvider";
 import { ChapterHeading } from "./ChapterHeading";
 import { Reveal } from "./Reveal";
 
-const FEATURED_CATEGORIES = new Set(["Founding Partner", "Prime Partner", "Technology Partner"]);
-
 const categoryLabel = (category) => (category === "Powered By Partner" ? "Powered by Partners" : category);
 
-const partnerGridClass = (count, isFeatured) => {
-    if (isFeatured && count === 1) return "grid grid-cols-1";
+const partnerGridClass = (count) => {
     if (count === 1) return "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
     if (count === 2) return "grid grid-cols-1 gap-5 sm:grid-cols-2";
     if (count === 4) return "grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4";
     return "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3";
 };
 
-const logoSizeClass = (isFeatured) => {
-    if (isFeatured) return "max-h-[132px] md:max-h-[150px]";
-    return "max-h-[92px] md:max-h-[108px]";
-};
-
-const LogoOrName = ({ partner, isFeatured, type = "partner" }) => {
-    const nameClass = `${isFeatured ? "text-xl md:text-2xl" : "text-base md:text-lg"} font-display text-center font-semibold leading-snug text-zinc-950`;
+const LogoOrName = ({ partner, type = "partner" }) => {
+    const nameClass = "font-display text-center text-base font-semibold leading-snug text-zinc-950 md:text-lg";
 
     if (!partner.logo) {
         return <span className={`${nameClass} px-4 py-5`}>{partner.name}</span>;
     }
 
     const imageClass = type === "supporter"
-        ? "max-h-[92px] md:max-h-[108px] w-auto max-w-[92%] object-contain"
-        : `${logoSizeClass(isFeatured)} w-auto max-w-[92%] object-contain`;
+        ? "max-h-[118px] md:max-h-[132px] w-auto max-w-[94%] object-contain"
+        : "max-h-[132px] md:max-h-[148px] w-auto max-w-[94%] object-contain";
 
     return (
         <>
-            <span className={`flex w-full items-center justify-center rounded-xl bg-white px-3 py-3 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.06)] ${isFeatured ? "min-h-[166px] md:min-h-[186px]" : "min-h-[128px] md:min-h-[146px]"}`} data-logo-plaque>
+            <span className="flex min-h-[164px] w-full items-center justify-center rounded-xl bg-white px-3 py-3 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.06)] md:min-h-[182px]" data-logo-plaque>
                 <img
                     src={partner.logo}
                     alt={partner.name}
@@ -54,7 +46,7 @@ const LogoOrName = ({ partner, isFeatured, type = "partner" }) => {
     );
 };
 
-const PartnerCard = ({ partner, testId, isFeatured }) => {
+const PartnerCard = ({ partner, testId }) => {
     const isExternal = partner.url && partner.url !== "#";
 
     return (
@@ -66,13 +58,11 @@ const PartnerCard = ({ partner, testId, isFeatured }) => {
             title={partner.name}
             target={isExternal ? "_blank" : undefined}
             rel={isExternal ? "noreferrer" : undefined}
-            className={`group relative flex flex-col items-center justify-center overflow-hidden rounded-2xl border border-[#d4af37]/20 bg-white text-center shadow-[0_18px_60px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-[#d4af37]/70 hover:shadow-[0_22px_70px_rgba(212,175,55,0.16)] ${
-                isFeatured ? "min-h-[236px] px-4 py-4 md:px-6 md:py-6" : "min-h-[190px] px-4 py-4 md:px-5 md:py-5"
-            }`}
+            className="group relative flex min-h-[222px] flex-col items-center justify-center overflow-hidden rounded-2xl border border-[#d4af37]/20 bg-white px-4 py-4 text-center shadow-[0_18px_60px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-[#d4af37]/70 hover:shadow-[0_22px_70px_rgba(212,175,55,0.16)] md:px-5 md:py-5"
         >
             <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.12),transparent_70%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true" />
             <span className="relative flex w-full items-center justify-center">
-                <LogoOrName partner={partner} isFeatured={isFeatured} />
+                <LogoOrName partner={partner} />
             </span>
             {partner.logo && (
                 <span className="relative mt-4 block text-[10px] font-black uppercase tracking-[0.16em] text-zinc-600 transition-colors duration-300 group-hover:text-[#8a6a10]">
@@ -84,11 +74,11 @@ const PartnerCard = ({ partner, testId, isFeatured }) => {
 };
 
 const CategoryBlock = ({ category, partners, index }) => {
-    const isFeatured = FEATURED_CATEGORIES.has(category);
+    if (!partners?.length) return null;
 
     return (
         <Reveal delay={0.05 * index}>
-            <section aria-label={category} className={`rounded-3xl border bg-[linear-gradient(135deg,rgba(255,255,255,0.055),rgba(255,255,255,0.018))] p-5 shadow-[0_28px_90px_rgba(0,0,0,0.35)] backdrop-blur-sm md:p-7 ${isFeatured ? "border-[#d4af37]/35" : "border-white/10"}`}>
+            <section aria-label={category} className="rounded-3xl border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,0.055),rgba(255,255,255,0.018))] p-5 shadow-[0_28px_90px_rgba(0,0,0,0.35)] backdrop-blur-sm md:p-7">
                 <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center">
                     <p className="flex shrink-0 items-center gap-3 text-[11px] font-black uppercase tracking-[0.34em] text-[#d4af37]">
                         <span className="h-2 w-2 rounded-full bg-[#d4af37] shadow-[0_0_18px_rgba(212,175,55,0.8)]" aria-hidden="true" />
@@ -96,9 +86,9 @@ const CategoryBlock = ({ category, partners, index }) => {
                     </p>
                     <span className="h-px flex-1 bg-gradient-to-r from-[#d4af37]/35 via-[#d4af37]/10 to-transparent" aria-hidden="true" />
                 </div>
-                <div className={partnerGridClass(partners.length, isFeatured)}>
+                <div className={partnerGridClass(partners.length)}>
                     {partners.map((partner, partnerIndex) => (
-                        <PartnerCard key={`${category}-${partner.name}-${partnerIndex}`} partner={partner} isFeatured={isFeatured} testId={`partner-logo-${category.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${partnerIndex}`} />
+                        <PartnerCard key={`${category}-${partner.name}-${partnerIndex}`} partner={partner} testId={`partner-logo-${category.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${partnerIndex}`} />
                     ))}
                 </div>
             </section>
@@ -141,8 +131,8 @@ export const PartnersSupporters = () => {
                         {supporters.map((supporter, index) => {
                             const isExternal = supporter.url && supporter.url !== "#";
                             return (
-                                <a key={`${supporter.name}-${index}`} href={supporter.url || "#"} data-testid={`supporter-logo-${index}`} data-partner-card aria-label={supporter.name} target={isExternal ? "_blank" : undefined} rel={isExternal ? "noreferrer" : undefined} className="group flex min-h-[150px] items-center justify-center rounded-xl border border-white/15 bg-white p-5 transition-[border-color,transform] duration-300 hover:-translate-y-1 hover:border-[#d4af37]/50">
-                                    {supporter.logo ? <img src={supporter.logo} alt={supporter.name} loading="lazy" className="max-h-[96px] md:max-h-[108px] w-auto max-w-[92%] object-contain" /> : <span className="font-display text-center text-base font-medium leading-snug text-zinc-900 transition-colors duration-300 group-hover:text-[#8a6a10]">{supporter.name}</span>}
+                                <a key={`${supporter.name}-${index}`} href={supporter.url || "#"} data-testid={`supporter-logo-${index}`} data-partner-card aria-label={supporter.name} target={isExternal ? "_blank" : undefined} rel={isExternal ? "noreferrer" : undefined} className="group flex min-h-[172px] items-center justify-center rounded-xl border border-white/15 bg-white p-5 transition-[border-color,transform] duration-300 hover:-translate-y-1 hover:border-[#d4af37]/50">
+                                    {supporter.logo ? <img src={supporter.logo} alt={supporter.name} loading="lazy" className="max-h-[118px] md:max-h-[132px] w-auto max-w-[94%] object-contain" /> : <span className="font-display text-center text-base font-medium leading-snug text-zinc-900 transition-colors duration-300 group-hover:text-[#8a6a10]">{supporter.name}</span>}
                                 </a>
                             );
                         })}

@@ -44,16 +44,10 @@ export const partnersConfig = [
         ],
     },
     {
-        category: "Trivia Partner",
-        partners: [
-            { name: "TBC", logo: null, url: "#" },
-        ],
-    },
-    {
         category: "Seating Partner",
         partners: [
             { name: "Ash Negi | Barfoot & Thompson", logo: "/assets/partners/ash-negi-barfoot-thompson.png", url: "https://www.barfoot.co.nz/our-people/a.negi" },
-            { name: "DIFM Property Management", logo: "/assets/partners/difm-property-management.jpeg", url: "https://difm.co.nz/" },
+            { name: "Global Tax Accountants", logo: null, url: "#" },
             { name: "KHL Finance", logo: "/assets/partners/khl-finance.jpg", url: "https://khlfinance.co.nz/" },
             { name: "Royal Gold", logo: "/assets/partners/royal-gold.png", url: "https://www.facebook.com/royalgold74/mentions/" },
             { name: "Sparkles Jewellers", logo: "/assets/partners/sparkles-jewellers.jpg", url: "https://www.instagram.com/sparklesjewellers/?hl=en" },
@@ -62,7 +56,7 @@ export const partnersConfig = [
     {
         category: "Silver Partner",
         partners: [
-            { name: "Inkstroke Designs", logo: null, url: "https://www.instagram.com/inkstroke_designs?igsh=NzR2NzE4emVoNG8y" },
+            { name: "Inkstroke Designs", logo: "/assets/partners/inkstroke-designs.png", url: "https://www.instagram.com/inkstroke_designs?igsh=NzR2NzE4emVoNG8y" },
             { name: "Starlight Furnishings", logo: "/assets/partners/starlight-furnishings.png", url: "https://www.starlightfurnishings.co.nz/" },
         ],
     },
