@@ -67,7 +67,7 @@ export const Hero = () => {
                     transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
                 >
                     <picture>
-                        <source media="(max-width: 640px)" srcSet={eventImages.portraitPoster || siteConfig.eventImages.portraitPoster} />
+                        <source media="(max-width: 640px)" srcSet={eventImages.mobilePoster || eventImages.squarePoster || siteConfig.eventImages.squarePoster} />
                         <img
                             src={eventImages.squarePoster || siteConfig.eventImages.squarePoster}
                             alt="NZ Sings Bollywood – 90s with 90 event poster"

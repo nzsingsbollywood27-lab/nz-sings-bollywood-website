@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { ADMIN_UID, supabase } from "../lib/supabase";
 import { defaultContent, mergeContent } from "../cms/defaultContent";
+import { normalizeContent } from "../cms/normaliseContent";
 import "./admin.css";
 
 const TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
@@ -162,8 +163,8 @@ function Login({ busy, message, login }) {
 export function AdminPage() {
     const [session, setSession] = useState(null);
     const [checking, setChecking] = useState(true);
-    const [content, setContent] = useState(defaultContent);
-    const [saved, setSaved] = useState(defaultContent);
+    const [content, setContent] = useState(normalizeContent(defaultContent));
+    const [saved, setSaved] = useState(normalizeContent(defaultContent));
     const [active, setActive] = useState("general");
     const [busy, setBusy] = useState(false);
     const [message, setMessage] = useState("");
@@ -172,7 +173,7 @@ export function AdminPage() {
     const group = groups.find((item) => item.id === active);
 
     useEffect(() => { supabase.auth.getSession().then(({ data }) => { setSession(data.session); setChecking(false); }); const { data } = supabase.auth.onAuthStateChange((_event, next) => setSession(next)); return () => data.subscription.unsubscribe(); }, []);
-    useEffect(() => { if (session?.user?.id !== ADMIN_UID) return; setBusy(true); supabase.from("cms_documents").select("content").eq("id", "site").maybeSingle().then(({ data, error }) => { const next = mergeContent(defaultContent, data?.content); setContent(next); setSaved(clone(next)); if (error) show(error.message, "error"); setBusy(false); }); }, [session]);
+    useEffect(() => { if (session?.user?.id !== ADMIN_UID) return; setBusy(true); supabase.from("cms_documents").select("content").eq("id", "site").maybeSingle().then(({ data, error }) => { const next = normalizeContent(mergeContent(defaultContent, data?.content)); setContent(next); setSaved(clone(next)); if (error) show(error.message, "error"); setBusy(false); }); }, [session]);
     useEffect(() => { const warn = (event) => { if (dirty) { event.preventDefault(); event.returnValue = ""; } }; window.addEventListener("beforeunload", warn); return () => window.removeEventListener("beforeunload", warn); }, [dirty]);
 
     const show = (text, type = "success") => { setMessage(text); setMessageType(type); };
@@ -185,7 +186,7 @@ export function AdminPage() {
         const inspect = (value, key = "") => { if (typeof value === "string" && urlKey(key) && !validUrl(value)) throw new Error(`Invalid URL in ${title(key)}.`); if (value && typeof value === "object") Object.entries(value).forEach(([childKey, child]) => inspect(child, childKey)); };
         inspect(content);
     };
-    const publish = async () => { setBusy(true); try { validate(); const { error } = await supabase.from("cms_documents").upsert({ id: "site", content, is_published: true, updated_at: new Date().toISOString(), updated_by: session.user.id }); if (error) throw error; setSaved(clone(content)); show("All changes published successfully."); } catch (error) { show(error.message, "error"); } setBusy(false); };
+    const publish = async () => { setBusy(true); try { validate(); const normalizedContent = normalizeContent(content); const { error } = await supabase.from("cms_documents").upsert({ id: "site", content: normalizedContent, is_published: true, updated_at: new Date().toISOString(), updated_by: session.user.id }); if (error) throw error; setContent(normalizedContent); setSaved(clone(normalizedContent)); show("All changes published successfully."); } catch (error) { show(error.message, "error"); } setBusy(false); };
     const upload = async (file, onChange, input, fieldPath, fieldKey) => {
         if (!file) return;
         if (!TYPES.includes(file.type) || file.size > MAX_SIZE) { show("Choose a JPEG, PNG, WebP or GIF no larger than 8 MB.", "error"); input.value = ""; return; }

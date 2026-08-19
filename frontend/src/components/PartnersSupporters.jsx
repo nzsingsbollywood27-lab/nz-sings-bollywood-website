@@ -16,6 +16,11 @@ const partnerGridClass = (count, isFeatured) => {
     return "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3";
 };
 
+const logoSizeClass = (isFeatured) => {
+    if (isFeatured) return "max-h-[132px] md:max-h-[150px]";
+    return "max-h-[92px] md:max-h-[108px]";
+};
+
 const LogoOrName = ({ partner, isFeatured, type = "partner" }) => {
     const nameClass = `${isFeatured ? "text-xl md:text-2xl" : "text-base md:text-lg"} font-display text-center font-semibold leading-snug text-zinc-950`;
 
@@ -24,14 +29,12 @@ const LogoOrName = ({ partner, isFeatured, type = "partner" }) => {
     }
 
     const imageClass = type === "supporter"
-        ? "max-h-[76px] md:max-h-[92px] w-auto max-w-[94%] object-contain"
-        : isFeatured
-            ? "max-h-[150px] md:max-h-[176px] w-auto max-w-[96%] object-contain"
-            : "max-h-[118px] md:max-h-[144px] w-auto max-w-[96%] object-contain";
+        ? "max-h-[92px] md:max-h-[108px] w-auto max-w-[92%] object-contain"
+        : `${logoSizeClass(isFeatured)} w-auto max-w-[92%] object-contain`;
 
     return (
         <>
-            <span className={`flex w-full items-center justify-center rounded-xl bg-white px-3 py-3 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.06)] ${isFeatured ? "min-h-[178px] md:min-h-[206px]" : "min-h-[144px] md:min-h-[168px]"}`} data-logo-plaque>
+            <span className={`flex w-full items-center justify-center rounded-xl bg-white px-3 py-3 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.06)] ${isFeatured ? "min-h-[166px] md:min-h-[186px]" : "min-h-[128px] md:min-h-[146px]"}`} data-logo-plaque>
                 <img
                     src={partner.logo}
                     alt={partner.name}
@@ -64,7 +67,7 @@ const PartnerCard = ({ partner, testId, isFeatured }) => {
             target={isExternal ? "_blank" : undefined}
             rel={isExternal ? "noreferrer" : undefined}
             className={`group relative flex flex-col items-center justify-center overflow-hidden rounded-2xl border border-[#d4af37]/20 bg-white text-center shadow-[0_18px_60px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-[#d4af37]/70 hover:shadow-[0_22px_70px_rgba(212,175,55,0.16)] ${
-                isFeatured ? "min-h-[250px] px-4 py-4 md:px-6 md:py-6" : "min-h-[210px] px-4 py-4 md:px-5 md:py-5"
+                isFeatured ? "min-h-[236px] px-4 py-4 md:px-6 md:py-6" : "min-h-[190px] px-4 py-4 md:px-5 md:py-5"
             }`}
         >
             <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.12),transparent_70%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true" />
@@ -139,7 +142,7 @@ export const PartnersSupporters = () => {
                             const isExternal = supporter.url && supporter.url !== "#";
                             return (
                                 <a key={`${supporter.name}-${index}`} href={supporter.url || "#"} data-testid={`supporter-logo-${index}`} data-partner-card aria-label={supporter.name} target={isExternal ? "_blank" : undefined} rel={isExternal ? "noreferrer" : undefined} className="group flex min-h-[150px] items-center justify-center rounded-xl border border-white/15 bg-white p-5 transition-[border-color,transform] duration-300 hover:-translate-y-1 hover:border-[#d4af37]/50">
-                                    {supporter.logo ? <img src={supporter.logo} alt={supporter.name} loading="lazy" className="max-h-[108px] w-auto max-w-[94%] object-contain" /> : <span className="font-display text-center text-base font-medium leading-snug text-zinc-900 transition-colors duration-300 group-hover:text-[#8a6a10]">{supporter.name}</span>}
+                                    {supporter.logo ? <img src={supporter.logo} alt={supporter.name} loading="lazy" className="max-h-[96px] md:max-h-[108px] w-auto max-w-[92%] object-contain" /> : <span className="font-display text-center text-base font-medium leading-snug text-zinc-900 transition-colors duration-300 group-hover:text-[#8a6a10]">{supporter.name}</span>}
                                 </a>
                             );
                         })}
