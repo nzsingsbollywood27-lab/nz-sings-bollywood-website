@@ -10,12 +10,12 @@ const TeamCard = ({ member, index }) => (
     >
         <div className="relative bg-[radial-gradient(ellipse_at_50%_0%,rgba(212,175,55,0.16),transparent_64%),#0b0906] px-6 pb-6 pt-7">
             {member.photo ? (
-                <div className="mx-auto flex aspect-[4/5] w-full max-w-[280px] items-center justify-center overflow-hidden rounded-2xl border border-[#d4af37]/25 bg-[#f7f7f4] p-3 shadow-[0_22px_60px_rgba(0,0,0,0.35)]">
+                <div className="mx-auto aspect-[4/5] w-full max-w-[280px] overflow-hidden rounded-2xl border border-[#d4af37]/25 bg-[#f7f7f4] shadow-[0_22px_60px_rgba(0,0,0,0.35)]">
                     <img
                         src={member.photo}
                         alt={`Portrait of ${member.name}`}
                         loading="lazy"
-                        className="block h-full w-full object-contain object-center"
+                        className="block h-full w-full object-cover object-center"
                     />
                 </div>
             ) : (
