@@ -73,6 +73,12 @@ export const partnersConfig = [
         ],
     },
     {
+        category: "Sound Partner",
+        partners: [
+            { name: "Navneel Prasad Music", logo: "/assets/partners/navneel-prasad-music.png", url: "https://www.facebook.com/n.prasadmusicals" },
+        ],
+    },
+    {
         category: "Catering Partner",
         partners: [
             { name: "Kol Restaurant", logo: "/assets/partners/kol-restaurant.png", url: "https://kolauckland.co.nz/" },
