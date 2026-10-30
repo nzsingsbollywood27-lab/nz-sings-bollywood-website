@@ -35,12 +35,24 @@ export const partnersConfig = [
         ],
     },
     {
+        category: "Legacy Partner",
+        partners: [
+            { name: "Kiwiana Financial Solutions", logo: "/assets/partners/kiwiana-financial-solutions.png", url: "#" },
+        ],
+    },
+    {
         category: "Powered by Partners",
         partners: [
             { name: "Gaurang Kaushik from Link Brokers", logo: "/assets/partners/gaurang-kaushik-link-brokers.png", url: "https://linkbusiness.co.nz/business-broker/gaurang-kaushik/" },
             { name: "MTF Finance", logo: "/assets/partners/mtf-finance.png", url: "https://www.mtf.co.nz/contact/find-franchise/mtf-finance-pukekohe/" },
             { name: "Praneet Prakash from Arizto", logo: "/assets/partners/praneet-prakash-arizto.png", url: "https://www.facebook.com/praneetp.re" },
             { name: "Reliable Financial Group", logo: "/assets/partners/reliable-financial-group.png", url: "https://reliablefinancialgroup.nz/" },
+        ],
+    },
+    {
+        category: "Trivia Partner",
+        partners: [
+            { name: "SGP Works", logo: "/assets/partners/sgp-works.png", url: "#" },
         ],
     },
     {
@@ -84,9 +96,19 @@ export const partnersConfig = [
             { name: "Kol Restaurant", logo: "/assets/partners/kol-restaurant.png", url: "https://kolauckland.co.nz/" },
         ],
     },
+    {
+        category: "Media Partners",
+        partners: [
+            { name: "Indian Newslink", logo: "/assets/partners/indian-newslink.png", url: "#" },
+            { name: "Radio Tarana", logo: "/assets/partners/radio-tarana.png", url: "#" },
+            { name: "Webfit News", logo: "/assets/partners/webfit-news.png", url: "#" },
+            { name: "Radio Spice", logo: "/assets/partners/radio-spice.png", url: "#" },
+        ],
+    },
 ];
 
 export const supportersConfig = [
+    { name: "Lion Foundation", logo: "/assets/supporters/lion-foundation.png", url: "#" },
     {
         name: "Auckland Chamber Choir – Viva Voce",
         logo: "/assets/supporters/auckland-chamber-choir-viva-voce.png",

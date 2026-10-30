@@ -1,4 +1,4 @@
-import { partnersConfig, teamConfig, siteConfig, socialConfig } from "../config";
+import { partnersConfig, supportersConfig, teamConfig, siteConfig, socialConfig } from "../config";
 
 const keyOf = (value) => String(value || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 
@@ -28,6 +28,15 @@ const normalisePartners = (remotePartners) => {
             };
         }),
     }));
+};
+
+const normaliseSupporters = (remoteSupporters) => {
+    const remote = Array.isArray(remoteSupporters) ? remoteSupporters : [];
+    const result = remote.length ? [...remote] : [...supportersConfig];
+    supportersConfig.forEach((supporter) => {
+        if (!findByName(result, supporter.name)) result.push(supporter);
+    });
+    return result;
 };
 
 const normaliseTeam = (remoteTeam) => {
@@ -81,6 +90,7 @@ export const normalizeContent = (content) => {
         site: normaliseHeroImages(content?.site),
         social: normaliseSocial(content?.social),
         partners: normalisePartners(content?.partners),
+        supporters: normaliseSupporters(content?.supporters),
         team: normaliseTeam(content?.team),
     };
 
